@@ -405,15 +405,24 @@ function install_matrix_packages () {
 function install_tesla_ble_packages () {
   local install_path="$1"
   local binary_dir=/tmp/binarydir
+  local binary_archive
+  binary_archive=$(mktemp /tmp/tesla-vehicle-command.XXXXXX.tar.gz)
 
   umount "$binary_dir" &> /dev/null || true
   rm -rf "$binary_dir"
   mkdir -p "$binary_dir"
   mount -t tmpfs none "$binary_dir"
+  curlwrapper -L -o "$binary_archive" "https://github.com/MikeBishop/tesla-vehicle-command-arm-binaries/releases/latest/download/vehicle-command-binaries-linux-armv6.tar.gz"
   (
     cd "$binary_dir"
-    curlwrapper -L "https://github.com/MikeBishop/tesla-vehicle-command-arm-binaries/releases/latest/download/vehicle-command-binaries-linux-armv6.tar.gz" | tar zxf - --strip-components=1
+    if ! tar zxf "$binary_archive" --strip-components=1
+    then
+      setup_progress "failed to extract Tesla vehicle-command binaries"
+      rm -f "$binary_archive"
+      exit 1
+    fi
   )
+  rm -f "$binary_archive"
 
   for binary in tesla-control tesla-keygen; do
     cp "${binary_dir}/$binary" "$install_path/$binary"

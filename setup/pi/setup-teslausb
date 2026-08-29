@@ -71,14 +71,23 @@ function copy_script () {
       download_sources
     else
       export SOURCE_DIR=/tmp/sourcedir
+      local source_archive
+      source_archive=$(mktemp /tmp/teslausb-source.XXXXXX.tar.gz)
       umount "$SOURCE_DIR" &> /dev/null || true
       rm -rf "$SOURCE_DIR"
       mkdir -p "$SOURCE_DIR"
       mount -t tmpfs none "$SOURCE_DIR"
+      curlwrapper -L -o "$source_archive" "https://github.com/${REPO}/teslausb/archive/${BRANCH}.tar.gz"
       (
         cd "$SOURCE_DIR"
-        curlwrapper -L "https://github.com/${REPO}/teslausb/archive/${BRANCH}.tar.gz" | tar zxf - --strip-components=1
+        if ! tar zxf "$source_archive" --strip-components=1
+        then
+          setup_progress "failed to extract TeslaUSB source archive"
+          rm -f "$source_archive"
+          exit 1
+        fi
       )
+      rm -f "$source_archive"
     fi
   fi
 
@@ -109,8 +118,8 @@ then
   # source the conf file directly to get REPO, BRANCH or download_sources
   # in case they're set
   safesource /root/teslausb_setup_variables.conf
-  REPO=${REPO:-marcone}
-  BRANCH=${BRANCH:-main-dev}
+  REPO=${REPO:-JuneLeGency}
+  BRANCH=${BRANCH:-master}
   copy_script setup/pi/envsetup.sh "$THISDIR"
 fi
 # SC can't follow non-constant source

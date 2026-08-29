@@ -27,8 +27,27 @@ Raspberry Pi Zero W 和 Zero 2 W 的板载无线网络均只支持 2.4 GHz。名
 
 ```bash
 ssh-add -l
-ssh gencylee@teslausb.local
+ssh teslausb
 ```
+
+本机 `~/.ssh/config` 使用以下快捷配置；`IdentityFile` 是与 Bitwarden Agent 中私钥对应的公钥，只用于精确选择 Agent 密钥：
+
+```sshconfig
+Host teslausb
+    HostName teslausb.local
+    User gencylee
+    Port 22
+    PreferredAuthentications publickey
+    PasswordAuthentication no
+    IdentityAgent $SSH_AUTH_SOCK
+    IdentityFile ~/.ssh/id_ed25519.pub
+    IdentitiesOnly yes
+    ConnectTimeout 10
+    ServerAliveInterval 30
+    ServerAliveCountMax 3
+```
+
+当前设备 SSH host key 指纹为 `SHA256:qWKN9RCypgwOUHJSpLjrS/aZ9Vsq7kcBDgIoweid4Oo`。重刷系统后 host key 会变化，应在确认目标 IP/MAC 后重新核验，而不是直接关闭主机密钥检查。
 
 连接时由 Bitwarden 弹窗确认签名。首次登录后执行：
 
