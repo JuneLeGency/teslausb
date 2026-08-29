@@ -444,6 +444,28 @@ function check_signal_configuration () {
   fi
 }
 
+function check_chinese_webhook_configuration () {
+  local enabled_name="$1"
+  local url_name="$2"
+  local provider_name="$3"
+  local expected_prefix="$4"
+  if [ "${!enabled_name:-false}" = "true" ]
+  then
+    if [ -z "${!url_name:-}" ]
+    then
+      log_progress "停止：已启用${provider_name}通知，但没有配置 ${url_name}。"
+      exit 1
+    fi
+    case "${!url_name}" in
+      "${expected_prefix}"*) ;;
+      *)
+        log_progress "停止：${provider_name}机器人地址必须来自官方域名，并以 ${expected_prefix} 开头。"
+        exit 1
+        ;;
+    esac
+  fi
+}
+
 function check_pushover_configuration () {
   if [ "${PUSHOVER_ENABLED:-false}" = "true" ]
   then
@@ -771,6 +793,7 @@ function install_push_message_scripts() {
   copy_script run/send-push-message "$install_path"
   copy_script run/send_sns.py "$install_path"
   copy_script run/send_matrix.py "$install_path"
+  copy_script run/send-cn-webhook.py "$install_path"
 }
 
 if [[ $EUID -ne 0 ]]
@@ -798,6 +821,9 @@ check_and_configure_slack
 check_and_configure_matrix
 check_and_configure_telegram
 check_and_configure_sns
+check_chinese_webhook_configuration DINGTALK_ENABLED DINGTALK_WEBHOOK_URL 钉钉 "https://oapi.dingtalk.com/robot/send?access_token="
+check_chinese_webhook_configuration WECOM_ENABLED WECOM_WEBHOOK_URL 企业微信 "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key="
+check_chinese_webhook_configuration FEISHU_ENABLED FEISHU_WEBHOOK_URL 飞书 "https://open.feishu.cn/open-apis/bot/v2/hook/"
 install_push_message_scripts /root/bin
 
 check_archive_configs

@@ -10,6 +10,9 @@ case "$1" in
   Boombox)
     diskimage="/backingfiles/boombox_disk.bin"
     ;;
+  Custom)
+    diskimage="/backingfiles/custom_disk.bin"
+    ;;
   *)
     exit 1
     ;;

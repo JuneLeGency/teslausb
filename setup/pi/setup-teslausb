@@ -129,7 +129,7 @@ WPA=/etc/wpa_supplicant/wpa_supplicant.conf
 if [ -e "$WPA" ] && ! grep -q "country=" $WPA && grep -q "network=" $WPA
 then
   setup_progress "adding country code to wpa_supplicant.conf"
-  echo "country=US" >> $WPA
+  echo "country=CN" >> $WPA
   REBOOT=true
 fi
 
@@ -324,12 +324,13 @@ function create_usb_drive_backing_files () {
 
   setup_progress "Creating backing disk files."
   copy_script setup/pi/create-backingfiles.sh /tmp
-  /tmp/create-backingfiles.sh "$CAM_SIZE" "$MUSIC_SIZE" "$LIGHTSHOW_SIZE" "$BOOMBOX_SIZE" "$BACKINGFILES_MOUNTPOINT" "$USE_EXFAT"
+  /tmp/create-backingfiles.sh "$CAM_SIZE" "$MUSIC_SIZE" "$LIGHTSHOW_SIZE" "$BOOMBOX_SIZE" "$CUSTOM_SIZE" "$BACKINGFILES_MOUNTPOINT" "$USE_EXFAT"
 
   update_backingfiles_fstab_entry $BACKINGFILES_MOUNTPOINT/cam_disk.bin /mnt/cam
   update_backingfiles_fstab_entry $BACKINGFILES_MOUNTPOINT/music_disk.bin /mnt/music
   update_backingfiles_fstab_entry $BACKINGFILES_MOUNTPOINT/lightshow_disk.bin /mnt/lightshow
   update_backingfiles_fstab_entry $BACKINGFILES_MOUNTPOINT/boombox_disk.bin /mnt/boombox
+  update_backingfiles_fstab_entry $BACKINGFILES_MOUNTPOINT/custom_disk.bin /mnt/custom
 
   # mount cam image and make sure the right directories exist
   umount /mnt/cam > /dev/null || true
@@ -378,6 +379,13 @@ function create_usb_drive_backing_files () {
       mkdir -p /mnt/boombox/Boombox
       touch /mnt/boombox/.metadata_never_index
       umount -l /mnt/boombox || setup_progress "failed to unmount /mnt/boombox"
+    fi
+
+    if [ -e /backingfiles/custom_disk.bin ] && mount_with_retry /mnt/custom
+    then
+      mkdir -p /mnt/custom/Wraps
+      touch /mnt/custom/.metadata_never_index
+      umount -l /mnt/custom || setup_progress "failed to unmount /mnt/custom"
     fi
 
   else
@@ -549,6 +557,7 @@ function cmd_upgrade_prepare {
     umount /mnt/cam /mnt/music || true
     umount /mnt/lightshow || true
     umount /mnt/boombox || true
+    umount /mnt/custom || true
     umount /mnt/archive /mnt/musicarchive || true
     /root/bin/disable_gadget.sh || true
     /root/bin/remountfs_rw
@@ -778,6 +787,13 @@ function diagnose {
       parted -s /backingfiles/boombox_disk.bin print || true
     else
       echo "no boombox disk image found"
+    fi
+    if [ -f /backingfiles/custom_disk.bin ]
+    then
+      echo "custom disk image has $(filefrag /backingfiles/custom_disk.bin | awk '{print $2}') extents"
+      parted -s /backingfiles/custom_disk.bin print || true
+    else
+      echo "no custom disk image found"
     fi
     df -h /teslausb/ / /backingfiles/ /mutable/
     echo -e "====== network ======"

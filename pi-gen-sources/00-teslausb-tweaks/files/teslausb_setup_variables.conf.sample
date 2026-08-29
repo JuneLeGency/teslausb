@@ -5,7 +5,7 @@
 # Remove the "#" before "export" to activate a line. Be sure to rename this file
 # to "teslausb_setup_variables.conf" and place it in the "boot" folder of your
 # SD card.
-# The latest version of this file is at: https://bit.ly/teslausbconfig
+# 本地化版本：https://github.com/JuneLeGency/teslausb/blob/master/pi-gen-sources/00-teslausb-tweaks/files/teslausb_setup_variables.conf.sample
 #
 ######################################################################
 
@@ -96,10 +96,13 @@ export SHARE_PASSWORD='password'
 #   * If no music size is specified, no music drive will be created.
 #   * If no lightshow size is specified, no lightshow drive will be created.
 #   * If no boombox size is specified, no boombox drive will be created.
+#   * CUSTOM_SIZE 用于车身贴图等自定义素材；为 0 时不创建该盘。
 export CAM_SIZE=40G
 #export MUSIC_SIZE=4G
 #export LIGHTSHOW_SIZE=1G
 #export BOOMBOX_SIZE=100M
+# 自定义车身贴图/车机素材独立盘。启用后会自动创建 Wraps 目录。
+#export CUSTOM_SIZE=500M
 
 # If you want to automatically copy music from a CIFS share every time
 # the Pi connects to wifi, set the following variable. The share is
@@ -145,7 +148,7 @@ export CAM_SIZE=40G
 # If you are using Armbian then Armbian likely already set the correct time
 # zone when you first set up Armbian, and uncommenting this isn't necessary.
 # Can be an actual time zone, or "auto" to attempt automatic timezone detection
-# export TIME_ZONE="America/Los_Angeles"
+# export TIME_ZONE="Asia/Shanghai"
 
 # By default there is a 20 second delay between connecting to wifi and
 # starting the archiving of recorded clips. Uncomment this to change
@@ -162,10 +165,22 @@ export CAM_SIZE=40G
 # uncoment to disable password SSH authentication for all users
 # export SSH_DISABLE_PASSWORD_AUTHENTICATION=true
 
-# Push notifications consist of a title and a message.
-# By default TESLAUSB_HOSTNAME is used as the title, but you can
-# set a custom title by setting the following variable.
-# export NOTIFICATION_TITLE="TeslaUSB Notification"
+# 推送通知由标题和正文组成。默认标题为“主机名通知”。
+# export NOTIFICATION_TITLE="我的 TeslaUSB 通知"
+
+# 钉钉群自定义机器人（加签密钥可选，建议启用）
+# export DINGTALK_ENABLED=true
+# export DINGTALK_WEBHOOK_URL='https://oapi.dingtalk.com/robot/send?access_token=...'
+# export DINGTALK_SECRET='SEC...'
+
+# 企业微信群机器人。个人微信没有官方机器人 Webhook，因此这里使用企业微信。
+# export WECOM_ENABLED=true
+# export WECOM_WEBHOOK_URL='https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=...'
+
+# 飞书群自定义机器人（签名校验密钥可选，建议启用）
+# export FEISHU_ENABLED=true
+# export FEISHU_WEBHOOK_URL='https://open.feishu.cn/open-apis/bot/v2/hook/...'
+# export FEISHU_SECRET='...'
 
 # Uncomment if setting up Signal_cli notifications
 # export SIGNAL_ENABLED=true

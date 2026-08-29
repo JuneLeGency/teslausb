@@ -15,11 +15,19 @@ CAM_SIZE="$1"
 MUSIC_SIZE="$2"
 LIGHTSHOW_SIZE="$3"
 BOOMBOX_SIZE="$4"
-# strip trailing slash that shell autocomplete might have added
-BACKINGFILES_MOUNTPOINT="${5/%\//}"
-USE_EXFAT="$6"
+if [ "$#" -eq 6 ]
+then
+  CUSTOM_SIZE=0
+  BACKINGFILES_MOUNTPOINT="${5/%\//}"
+  USE_EXFAT="$6"
+else
+  CUSTOM_SIZE="$5"
+  # strip trailing slash that shell autocomplete might have added
+  BACKINGFILES_MOUNTPOINT="${6/%\//}"
+  USE_EXFAT="$7"
+fi
 
-log_progress "cam: $CAM_SIZE, music: $MUSIC_SIZE, lightshow: $LIGHTSHOW_SIZE, boombox: $BOOMBOX_SIZE mountpoint: $BACKINGFILES_MOUNTPOINT, exfat: $USE_EXFAT"
+log_progress "cam: $CAM_SIZE, music: $MUSIC_SIZE, lightshow: $LIGHTSHOW_SIZE, boombox: $BOOMBOX_SIZE, custom: $CUSTOM_SIZE mountpoint: $BACKINGFILES_MOUNTPOINT, exfat: $USE_EXFAT"
 
 function first_partition_offset () {
   local filename="$1"
@@ -70,6 +78,9 @@ function calc_size () {
         ;;
       LIGHTSHOW_SIZE)
         requestedsize=1G
+        ;;
+      CUSTOM_SIZE)
+        requestedsize=500M
         ;;
       *)
         log_progress "Percentage-based size no longer supported, use fixed size instead." > /dev/stderr
@@ -174,6 +185,7 @@ function release_all_images () {
   umount -d /mnt/music || true
   umount -d /mnt/lightshow || true
   umount -d /mnt/boombox || true
+  umount -d /mnt/custom || true
   umount -d /backingfiles/snapshots/snap*/mnt || true
 }
 
@@ -241,16 +253,19 @@ CAM_DISK_FILE_NAME="$BACKINGFILES_MOUNTPOINT/cam_disk.bin"
 MUSIC_DISK_FILE_NAME="$BACKINGFILES_MOUNTPOINT/music_disk.bin"
 LIGHTSHOW_DISK_FILE_NAME="$BACKINGFILES_MOUNTPOINT/lightshow_disk.bin"
 BOOMBOX_DISK_FILE_NAME="$BACKINGFILES_MOUNTPOINT/boombox_disk.bin"
+CUSTOM_DISK_FILE_NAME="$BACKINGFILES_MOUNTPOINT/custom_disk.bin"
 
 CAM_DISK_SIZE="$(calc_size CAM_SIZE)"
 MUSIC_DISK_SIZE="$(calc_size MUSIC_SIZE)"
 LIGHTSHOW_DISK_SIZE="$(calc_size LIGHTSHOW_SIZE)"
 BOOMBOX_DISK_SIZE="$(calc_size BOOMBOX_SIZE)"
+CUSTOM_DISK_SIZE="$(calc_size CUSTOM_SIZE)"
 
 if image_matches_params "$CAM_DISK_FILE_NAME" "$CAM_DISK_SIZE" && \
    image_matches_params "$MUSIC_DISK_FILE_NAME" "$MUSIC_DISK_SIZE" && \
    image_matches_params "$LIGHTSHOW_DISK_FILE_NAME" "$LIGHTSHOW_DISK_SIZE" && \
-   image_matches_params "$BOOMBOX_DISK_FILE_NAME" "$BOOMBOX_DISK_SIZE"
+   image_matches_params "$BOOMBOX_DISK_FILE_NAME" "$BOOMBOX_DISK_SIZE" && \
+   image_matches_params "$CUSTOM_DISK_FILE_NAME" "$CUSTOM_DISK_SIZE"
 then
   log_progress "No need to update disk images"
   exit 0
@@ -274,31 +289,32 @@ function reduce_size () {
   adjusted=true
 }
 
-if [ "$((CAM_DISK_SIZE+MUSIC_DISK_SIZE+LIGHTSHOW_DISK_SIZE+BOOMBOX_DISK_SIZE))" -gt "$(available_space)" ]
+if [ "$((CAM_DISK_SIZE+MUSIC_DISK_SIZE+LIGHTSHOW_DISK_SIZE+BOOMBOX_DISK_SIZE+CUSTOM_DISK_SIZE))" -gt "$(available_space)" ]
 then
   log_progress "Total requested size exceeds available space"
   
-  while [ "$((CAM_DISK_SIZE+MUSIC_DISK_SIZE+LIGHTSHOW_DISK_SIZE+BOOMBOX_DISK_SIZE))" -gt "$(available_space)" ]
+  while [ "$((CAM_DISK_SIZE+MUSIC_DISK_SIZE+LIGHTSHOW_DISK_SIZE+BOOMBOX_DISK_SIZE+CUSTOM_DISK_SIZE))" -gt "$(available_space)" ]
   do
     adjusted=false
     reduce_size CAM_DISK_SIZE "30G"
     reduce_size MUSIC_DISK_SIZE "4G"
     reduce_size LIGHTSHOW_DISK_SIZE "1G"
     reduce_size BOOMBOX_DISK_SIZE "500M"
+    reduce_size CUSTOM_DISK_SIZE "500M"
     if [ "$adjusted" = "false" ]
     then
       log_progress "Failed to adjust sizes to fit available space"
       exit 1
     fi
   done
-  log_progress "Adjusted sizes to ${CAM_DISK_SIZE}K / ${MUSIC_DISK_SIZE}K / ${LIGHTSHOW_DISK_SIZE}K / ${BOOMBOX_DISK_SIZE}K"
+  log_progress "Adjusted sizes to ${CAM_DISK_SIZE}K / ${MUSIC_DISK_SIZE}K / ${LIGHTSHOW_DISK_SIZE}K / ${BOOMBOX_DISK_SIZE}K / ${CUSTOM_DISK_SIZE}K"
 fi
 
 # if we get here, one or more of the images need to be created, deleted or updated, and there should be
 # enough space to do so, possibly requiring deleting some or all of the snapshots to free up space first.
 
 # TODO: resize images where possible, instead of recreating them
-if [ -e "$CAM_DISK_FILE_NAME" ] || [ -e "$MUSIC_DISK_FILE_NAME" ] || [ -e "$LIGHTSHOW_DISK_FILE_NAME" ] || [ -e "$BOOMBOX_DISK_FILE_NAME" ] || [ -e "$BACKINGFILES_MOUNTPOINT/snapshots" ]
+if [ -e "$CAM_DISK_FILE_NAME" ] || [ -e "$MUSIC_DISK_FILE_NAME" ] || [ -e "$LIGHTSHOW_DISK_FILE_NAME" ] || [ -e "$BOOMBOX_DISK_FILE_NAME" ] || [ -e "$CUSTOM_DISK_FILE_NAME" ] || [ -e "$BACKINGFILES_MOUNTPOINT/snapshots" ]
 then
   if [ -t 0 ]
   then
@@ -328,5 +344,7 @@ add_drive "music" "MUSIC" "$MUSIC_DISK_SIZE" "$MUSIC_DISK_FILE_NAME" "$USE_EXFAT
 add_drive "lightshow" "LIGHTSHOW" "$LIGHTSHOW_DISK_SIZE" "$LIGHTSHOW_DISK_FILE_NAME" "$USE_EXFAT"
 
 add_drive "boombox" "BOOMBOX" "$BOOMBOX_DISK_SIZE" "$BOOMBOX_DISK_FILE_NAME" "$USE_EXFAT"
+
+add_drive "custom" "CUSTOM" "$CUSTOM_DISK_SIZE" "$CUSTOM_DISK_FILE_NAME" "$USE_EXFAT"
 
 log_progress "done"

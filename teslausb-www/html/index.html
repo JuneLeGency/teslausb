@@ -1865,10 +1865,12 @@ function readconfig() {
     if (config.has_music == "yes") numdrives++;
     if (config.has_lightshow == "yes") numdrives++;
     if (config.has_boombox == "yes") numdrives++;
+    if (config.has_custom == "yes") numdrives++;
     if (numdrives == 1) {
       var filestabname = "Music"
       if (config.has_lightshow == "yes") filestabname = "LightShow";
       if (config.has_boombox == "yes") filestabname = "Boombox";
+      if (config.has_custom == "yes") filestabname = "自定义素材";
       filestab.innerText = filestabname;
     }
     if (numdrives > 0 && filestab.style.display == "") {
@@ -1878,7 +1880,8 @@ function readconfig() {
       new FileBrowser(fb, [
         ...config.has_music == "yes" ? [{ path: "fs/Music", label: "Music" }] : [],
         ...config.has_lightshow == "yes" ? [{ path: "fs/LightShow", label: "LightShow" }] : [],
-        ...config.has_boombox == "yes" ? [{ path: "fs/Boombox", label: "Boombox" }] : []
+        ...config.has_boombox == "yes" ? [{ path: "fs/Boombox", label: "锁车音 / Boombox" }] : [],
+        ...config.has_custom == "yes" ? [{ path: "fs/Custom", label: "车身贴图 / 自定义素材" }] : []
       ]);
     }
     if (config.has_cam == "yes") {

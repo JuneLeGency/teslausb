@@ -80,7 +80,7 @@ function do_music_sync {
   declare -i NUM_FILES_SKIPPED=$((TOTAL_FILES-NUM_FILES_COPIED))
   NUM_FILES_COPIED=$((NUM_FILES_COPIED-NUM_FILES_ERROR))
 
-  local message="Copied $NUM_FILES_COPIED music file(s), deleted $NUM_FILES_DELETED, skipped $NUM_FILES_SKIPPED previously-copied files, and encountered $NUM_FILES_ERROR errors."
+  local message="音乐同步完成：复制 $NUM_FILES_COPIED 个，删除 $NUM_FILES_DELETED 个，跳过 $NUM_FILES_SKIPPED 个已同步文件，发生 $NUM_FILES_ERROR 个错误。"
 
   if [ $NUM_FILES_COPIED -ne 0 ] || [ $NUM_FILES_DELETED -ne 0 ] || [ $NUM_FILES_ERROR -ne 0 ]
   then

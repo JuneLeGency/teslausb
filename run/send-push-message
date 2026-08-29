@@ -102,6 +102,21 @@ function send_ntfy () {
     "$NTFY_URL"
 }
 
+function send_dingtalk () {
+  log "正在发送钉钉通知。"
+  python3 /root/bin/send-cn-webhook.py dingtalk "$DINGTALK_WEBHOOK_URL" "${DINGTALK_SECRET:-}" "$title" "$message"
+}
+
+function send_wecom () {
+  log "正在发送企业微信通知。"
+  python3 /root/bin/send-cn-webhook.py wecom "$WECOM_WEBHOOK_URL" "" "$title" "$message"
+}
+
+function send_feishu () {
+  log "正在发送飞书通知。"
+  python3 /root/bin/send-cn-webhook.py feishu "$FEISHU_WEBHOOK_URL" "${FEISHU_SECRET:-}" "$title" "$message"
+}
+
 log "$message"
 
 [ "${SIGNAL_ENABLED:-false}" = "true" ] && send_signal
@@ -116,5 +131,8 @@ log "$message"
 [ "${SLACK_ENABLED:-false}" = "true" ] && send_slack
 [ "${NOTIFICATION_COMMAND_ENABLED:-false}" = "true" ] && send_shell
 [ "${NTFY_ENABLED:-false}" = "true" ] && send_ntfy
+[ "${DINGTALK_ENABLED:-false}" = "true" ] && send_dingtalk
+[ "${WECOM_ENABLED:-false}" = "true" ] && send_wecom
+[ "${FEISHU_ENABLED:-false}" = "true" ] && send_feishu
 
 exit 0

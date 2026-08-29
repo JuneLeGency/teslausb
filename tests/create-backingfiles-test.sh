@@ -17,7 +17,7 @@ BACKINGFILES_FOLDER=$(mktemp -d backingfilestestXXX)
 LOG="$BACKINGFILES_FOLDER-log.txt"
 
 function checksuccess {
-  name=$(printf '%6s %6s %6s %6s %6s' "$1" "$2" "$3" "$4" "$6")
+  name=$(printf '%6s %6s %6s %6s %6s %6s' "$1" "$2" "$3" "$4" "$5" "$7")
   if ../setup/pi/create-backingfiles.sh "$@"
   then
     printf '%-45s %s\n' "$name" OK
@@ -58,10 +58,13 @@ rm "$BACKINGFILES_FOLDER/test.bin"
       do
         for boombox in 0 100M
         do
-          for exfat in true false
+          for custom in 0 100M
           do
-            checksuccess "$cam" "$music" "$lightshow" "$boombox" "$BACKINGFILES_FOLDER" "$exfat" < /dev/null
-	    find "$BACKINGFILES_FOLDER" -type f | xargs rm
+            for exfat in true false
+            do
+              checksuccess "$cam" "$music" "$lightshow" "$boombox" "$custom" "$BACKINGFILES_FOLDER" "$exfat" < /dev/null
+	      find "$BACKINGFILES_FOLDER" -type f | xargs rm
+            done
           done
         done
       done

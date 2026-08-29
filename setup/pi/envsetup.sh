@@ -105,7 +105,7 @@ function read_setup_variables {
   done
 
   # set defaults for things not set in the config
-  REPO=${REPO:-marcone}
+  REPO=${REPO:-JuneLeGency}
   SNAPSHOTS_ENABLED=${SNAPSHOTS_ENABLED:-true}
   if [ "$SNAPSHOTS_ENABLED" != "true" ]
   then
@@ -117,12 +117,12 @@ function read_setup_variables {
       echo "WARNING: using '$BRANCH' branch because SNAPSHOTS_ENABLED is not true"
     fi
   else
-    BRANCH=${BRANCH:-main-dev}
+    BRANCH=${BRANCH:-master}
   fi
   CONFIGURE_ARCHIVING=${CONFIGURE_ARCHIVING:-true}
   UPGRADE_PACKAGES=${UPGRADE_PACKAGES:-false}
   export TESLAUSB_HOSTNAME=${TESLAUSB_HOSTNAME:-teslausb}
-  export NOTIFICATION_TITLE=${NOTIFICATION_TITLE:-${TESLAUSB_HOSTNAME}}
+  export NOTIFICATION_TITLE=${NOTIFICATION_TITLE:-${TESLAUSB_HOSTNAME}通知}
   SAMBA_ENABLED=${SAMBA_ENABLED:-false}
   SAMBA_GUEST=${SAMBA_GUEST:-false}
   INCREASE_ROOT_SIZE=${INCREASE_ROOT_SIZE:-0}
@@ -130,6 +130,7 @@ function read_setup_variables {
   export MUSIC_SIZE=${MUSIC_SIZE:-0}
   export BOOMBOX_SIZE=${BOOMBOX_SIZE:-0}
   export LIGHTSHOW_SIZE=${LIGHTSHOW_SIZE:-0}
+  export CUSTOM_SIZE=${CUSTOM_SIZE:-0}
   export DATA_DRIVE=${DATA_DRIVE:-''}
   export USE_EXFAT=${USE_EXFAT:-false}
 }

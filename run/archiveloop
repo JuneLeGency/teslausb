@@ -280,7 +280,7 @@ function trim_free_space() {
 }
 
 function fix_errors_in_images () {
-  for i in cam music boombox lightshow
+  for i in cam music boombox lightshow custom
   do
     img="/backingfiles/${i}_disk.bin"
     if [ -e "$img" ]
@@ -522,20 +522,20 @@ function archive_teslacam_clips () {
     log "Starting recording archiving"
     local -r start_ts=$(date --utc --date "now" +%s)
 
-    local message="Archiving "
+    local message="开始归档："
     if [[ $sentry_count -gt 0 && $trackmode_count -gt 0 ]]
     then
-      message+="$trackmode_count track mode file(s) and $sentry_count file(s) including $event_count event folder(s)"
+      message+="$trackmode_count 个赛道模式文件，以及 $sentry_count 个行车记录文件（含 $event_count 个事件目录）"
     elif [[ $sentry_count -gt 0 && $event_count -gt 0 ]]
     then
-      message+="$sentry_count file(s) including $event_count event folder(s)"
+      message+="$sentry_count 个文件（含 $event_count 个事件目录）"
     elif [[ $sentry_count -gt 0 ]]
     then
-      message+="$sentry_count file(s)"
+      message+="$sentry_count 个文件"
     else
-      message+="$trackmode_count track mode file(s)"
+      message+="$trackmode_count 个赛道模式文件"
     fi
-    message+=" starting at $(date)"
+    message+="，时间 $(date '+%F %T')"
     /root/bin/send-push-message "$NOTIFICATION_TITLE:" "$message" start || log "failed to send push message"
 
     # setup trigger files
@@ -569,9 +569,9 @@ function archive_teslacam_clips () {
 
     if /root/bin/archive-clips.sh "$overlaymerged" "${sentrylist}" "${triggerdir}" "${triggerlist}"
     then
-      message="Archiving completed successfully. "
+      message="归档成功。"
     else
-      message="Error during archiving. "
+      message="归档失败。"
       archive_success=false
     fi
 
@@ -601,19 +601,19 @@ function archive_teslacam_clips () {
         mv "${sentrylist_previously_archived}.new" "${sentrylist_previously_archived}"
     fi
 
-    message+="Archived "
+    message+="已归档 "
     if [[ $sentry_count -gt 0 && $trackmode_count -gt 0 ]]
     then
-      message+="${trackmode_archived} trackmode files and ${sentry_archived} other files"
+      message+="${trackmode_archived} 个赛道模式文件和 ${sentry_archived} 个其他文件"
     elif [[ $sentry_count -gt 0 ]]
     then
-      message+="${sentry_archived} files"
+      message+="${sentry_archived} 个文件"
     else
-      message+="${trackmode_archived} trackmode files"
+      message+="${trackmode_archived} 个赛道模式文件"
     fi
     local -r end_ts=$(date --utc --date "now" +%s)
     local -r delta=$((end_ts - start_ts))
-    message+=" in $(convert_seconds_to_nice_time $delta)"
+    message+="，耗时 $(convert_seconds_to_nice_time $delta)"
     /root/bin/send-push-message "$NOTIFICATION_TITLE:" "${message}" finish
 
     if [ -e /tmp/archive-error.log ]

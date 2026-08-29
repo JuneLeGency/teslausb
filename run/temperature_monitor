@@ -43,7 +43,7 @@ do
     if [[ ("$raw_temp" -gt "$TEMPERATURE_WARNING") && ("$set_warning" -eq 0) ]]
     then
       set_warning=1
-      message="Temperature Monitor: WARNING threshold exceeded ($(readable "$TEMPERATURE_WARNING"))!!!"
+      message="温度监控：已超过危险阈值（$(readable "$TEMPERATURE_WARNING")）！"
       /root/bin/send-push-message "$NOTIFICATION_TITLE:" "$message" || log "Temperature Monitor: Failed to send push message; likely no internet connection presently."
     fi
   fi
@@ -58,7 +58,7 @@ do
     if [[ ("$raw_temp" -gt "$TEMPERATURE_CAUTION") && ("$set_caution" -eq 0) ]]
     then
       set_caution=1
-      message="Temperature Monitor: CAUTION threshold exceeded ($(readable "$TEMPERATURE_CAUTION"))!!!"
+      message="温度监控：已超过警告阈值（$(readable "$TEMPERATURE_CAUTION")）！"
       /root/bin/send-push-message "$NOTIFICATION_TITLE:" "$message" || log "Temperature Monitor: Failed to send push message; likely no internet connection presently."
     fi
   fi
@@ -79,7 +79,7 @@ do
     rm /tmp/flag_post_archive # Clear flag
     if [[ "${TEMPERATURE_POSTARCHIVE:-false}" = "true" ]]
     then
-      message="Temperature Monitor: $(readable "$raw_temp") (max=$(readable "$peak_temp") $peak_time)"
+      message="温度监控：当前 $(readable "$raw_temp")（峰值 $(readable "$peak_temp")，$peak_time）"
       /root/bin/send-push-message "$NOTIFICATION_TITLE:" "$message" || log "Temperature Monitor: Failed to send push message."
     fi
   fi

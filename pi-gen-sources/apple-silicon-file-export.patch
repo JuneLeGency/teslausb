@@ -1,0 +1,88 @@
+diff --git a/Dockerfile b/Dockerfile
+index f17077c..9841762 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -8,7 +8,7 @@ RUN apt-get -y update && \
+         git vim parted \
+         quilt coreutils qemu-user-static debootstrap zerofree zip dosfstools e2fsprogs\
+         libarchive-tools libcap2-bin rsync grep udev xz-utils curl xxd file kmod bc \
+-        binfmt-support ca-certificates fdisk gpg pigz arch-test \
++        binfmt-support ca-certificates fdisk gpg pigz arch-test mtools \
+     && rm -rf /var/lib/apt/lists/*
+ 
+ COPY . /pi-gen/
+diff --git a/export-image/prerun.sh b/export-image/prerun.sh
+index 9f1b496..0dbdcf9 100755
+--- a/export-image/prerun.sh
++++ b/export-image/prerun.sh
+@@ -33,6 +33,20 @@ parted --script "${IMG_FILE}" unit B mkpart primary fat32 "${BOOT_PART_START}" "
+ parted --script "${IMG_FILE}" unit B mkpart primary ext4 "${ROOT_PART_START}" "$((ROOT_PART_START + ROOT_PART_SIZE - 1))"
+ 
+ echo "Creating loop device..."
++if [ "${PI_GEN_FILE_BACKED_EXPORT:-0}" = "1" ]; then
++	echo "Using file-backed image export (no loop devices)"
++	cat > "${STAGE_WORK_DIR}/partition-layout.env" <<EOF
++BOOT_PART_START=${BOOT_PART_START}
++BOOT_PART_SIZE=${BOOT_PART_SIZE}
++ROOT_PART_START=${ROOT_PART_START}
++ROOT_PART_SIZE=${ROOT_PART_SIZE}
++EOF
++	rsync -aHAXx --exclude /var/cache/apt/archives --exclude /boot/firmware "${EXPORT_ROOTFS_DIR}/" "${ROOTFS_DIR}/"
++	mkdir -p "${ROOTFS_DIR}/boot/firmware"
++	rsync -rtx "${EXPORT_ROOTFS_DIR}/boot/firmware/" "${ROOTFS_DIR}/boot/firmware/"
++	exit 0
++fi
++
+ cnt=0
+ until ensure_next_loopdev && LOOP_DEV="$(losetup --show --find --partscan "$IMG_FILE")"; do
+ 	if [ $cnt -lt 5 ]; then
+diff --git a/export-image/05-finalise/01-run.sh b/export-image/05-finalise/01-run.sh
+index 860b97f..7d133a0 100755
+--- a/export-image/05-finalise/01-run.sh
++++ b/export-image/05-finalise/01-run.sh
+@@ -94,12 +94,39 @@ if hash syft 2>/dev/null; then
+ 		-o spdx-json="${SBOM_FILE}"
+ fi
+ 
+-ROOT_DEV="$(awk "\$2 == \"${ROOTFS_DIR}\" {print \$1}" /etc/mtab)"
+-
+-unmount "${ROOTFS_DIR}"
+-zerofree "${ROOT_DEV}"
+-
+-unmount_image "${IMG_FILE}"
++if [ "${PI_GEN_FILE_BACKED_EXPORT:-0}" = "1" ]; then
++	# Docker runtimes on macOS may not reliably expose writable loop
++	# partitions. Build both filesystems as regular files, then place them at
++	# the exact offsets declared in the MBR produced by parted.
++	# shellcheck disable=SC1090
++	source "${STAGE_WORK_DIR}/partition-layout.env"
++	BOOT_FS="${STAGE_WORK_DIR}/bootfs.img"
++	ROOT_FS="${STAGE_WORK_DIR}/rootfs.img"
++	BOOT_STAGING="${STAGE_WORK_DIR}/boot-files"
++
++	unmount "${ROOTFS_DIR}"
++	rm -rf "$BOOT_STAGING"
++	mv "${ROOTFS_DIR}/boot/firmware" "$BOOT_STAGING"
++	mkdir -p "${ROOTFS_DIR}/boot/firmware"
++
++	truncate -s "$BOOT_PART_SIZE" "$BOOT_FS"
++	mkdosfs -n bootfs -F 32 -s 4 "$BOOT_FS" >/dev/null
++	MTOOLS_SKIP_CHECK=1 mcopy -i "$BOOT_FS" -spm "$BOOT_STAGING"/* ::
++
++	truncate -s "$ROOT_PART_SIZE" "$ROOT_FS"
++	mkfs.ext4 -F -L rootfs -O ^64bit,^huge_file -d "${ROOTFS_DIR}" "$ROOT_FS" >/dev/null
++	e2fsck -fy "$ROOT_FS" >/dev/null || [ "$?" -le 1 ]
++
++	dd if="$BOOT_FS" of="$IMG_FILE" bs=1M seek="$((BOOT_PART_START / 1024 / 1024))" conv=notrunc status=progress
++	dd if="$ROOT_FS" of="$IMG_FILE" bs=1M seek="$((ROOT_PART_START / 1024 / 1024))" conv=notrunc status=progress
++	sync
++	rm -f "$BOOT_FS" "$ROOT_FS"
++else
++	ROOT_DEV="$(awk "\$2 == \"${ROOTFS_DIR}\" {print \$1}" /etc/mtab)"
++	unmount "${ROOTFS_DIR}"
++	zerofree "${ROOT_DEV}"
++	unmount_image "${IMG_FILE}"
++fi
+ 
+ if hash bmaptool 2>/dev/null; then
+ 	bmaptool create \
