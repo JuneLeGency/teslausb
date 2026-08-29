@@ -100,6 +100,27 @@ h1 em { color: var(--red); font-style: normal; }
 .safety { grid-column: 1 / -1; display: flex; gap: 25px; margin-top: 12px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 11px; }
 .safety span { color: #777b80; }
 
+.ecosystem { background: #10141a; color: #f5f6f8; }
+.ecosystemIntro { display: grid; grid-template-columns: 1fr .72fr; gap: clamp(50px, 9vw, 130px); align-items: end; }
+.ecosystemIntro > p { margin: 0 0 5px; color: #9299a3; font-size: 15px; line-height: 1.8; }
+.projectGrid { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 64px; border-top: 1px solid #303640; border-left: 1px solid #303640; }
+.projectCard { position: relative; min-height: 300px; padding: 28px; border-right: 1px solid #303640; border-bottom: 1px solid #303640; transition: background .2s ease, transform .2s ease; }
+.projectCard:hover { z-index: 1; background: #181e26; transform: translateY(-4px); }
+.projectMeta { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.projectMeta span { padding: 6px 8px; border-radius: 5px; background: rgb(139 227 196 / 12%); color: var(--mint); font: 9px monospace; letter-spacing: .08em; }
+.projectMeta em { color: #6f7781; font: 9px monospace; font-style: normal; text-align: right; }
+.projectCard h3 { margin: 64px 0 14px; font-size: 22px; letter-spacing: -.035em; }
+.projectCard p { margin: 0; color: #8f97a1; font-size: 13px; line-height: 1.75; }
+.projectCard > i { position: absolute; left: 28px; bottom: 26px; color: #626b76; font-size: 10px; font-style: normal; }
+.ecosystemDecision { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; margin-top: 30px; padding: 22px 24px; border: 1px solid #34443f; border-radius: 11px; background: #15201e; }
+.ecosystemDecision > span { padding: 5px 7px; border-radius: 4px; background: var(--mint); color: #10201b; font: 9px monospace; font-weight: 800; }
+.ecosystemDecision p { margin: 0; color: #9eaaa6; font-size: 12px; line-height: 1.75; }
+.ecosystemDecision b { color: #e9f5f1; }
+.ecosystemDecision code { color: var(--mint); }
+.hardwareDecision { margin-top: 12px; border-color: #49383b; background: #21191d; }
+.hardwareDecision:hover { border-color: #6f4a50; background: #271b20; }
+.hardwareDecision > span { background: var(--red); color: #fff; }
+
 .localization { background: #e8e4dd; }
 .localeGrid { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(60px, 10vw, 150px); }
 .audit { border-top: 1px solid #c9c4bb; }
@@ -136,7 +157,8 @@ h1 em { color: var(--red); font-style: normal; }
   .heroCopy { max-width: 680px; }
   .console { min-height: 540px; }
   .capGrid { grid-template-columns: repeat(2, 1fr); }
-  .archGrid, .localeGrid { grid-template-columns: 1fr; }
+  .archGrid, .localeGrid, .ecosystemIntro { grid-template-columns: 1fr; }
+  .projectGrid { grid-template-columns: repeat(2, 1fr); }
   .steps { grid-template-columns: repeat(2, 1fr); }
   .steps article:nth-child(2) { border-right: 0; }
   .steps article:nth-child(-n+2) { border-bottom: 1px solid #343a43; }
@@ -154,7 +176,7 @@ h1 em { color: var(--red); font-style: normal; }
   .console { padding: 16px; border-radius: 16px; }
   .section { padding-block: 80px; }
   .sectionHead h2 { font-size: 40px; }
-  .capGrid, .steps { grid-template-columns: 1fr; }
+  .capGrid, .projectGrid, .steps { grid-template-columns: 1fr; }
   .capCard { min-height: 230px; }
   .steps article { min-height: 210px; border-right: 0; border-bottom: 1px solid #343a43; }
   .steps article:last-child { border-bottom: 0; }

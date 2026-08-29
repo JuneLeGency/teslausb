@@ -23,6 +23,51 @@ const localization = [
   ['底层技术日志', '部分保留上游英文', 'pending'],
 ];
 
+const ecosystem = [
+  {
+    status: '已接入',
+    fit: 'Pi Zero / Zero 2 W',
+    name: 'Tesla Vehicle Command',
+    copy: 'Tesla 官方 BLE 与 Fleet 命令工具；当前镜像已经使用 tesla-control / tesla-keygen 辅助唤醒。',
+    href: 'https://github.com/teslamotors/vehicle-command',
+  },
+  {
+    status: '优先候选',
+    fit: 'Pi Zero / Zero 2 W',
+    name: 'File Browser',
+    copy: '单文件网页管理器，官方提供 ARMv6/ARMv7 构建；适合升级锁车音、灯光秀和贴图素材管理。',
+    href: 'https://github.com/filebrowser/filebrowser',
+  },
+  {
+    status: '归档端推荐',
+    fit: 'NAS / PC',
+    name: 'tesla_dashcam',
+    copy: '把四至六路 TeslaCam 分段自动拼成一条视频；适合使用归档触发文件在服务器上异步处理。',
+    href: 'https://github.com/ehendrix23/tesla_dashcam',
+  },
+  {
+    status: '伴生服务',
+    fit: 'Pi 4 / NAS · 64-bit',
+    name: 'TeslaMate',
+    copy: '完整的行程、充电、电池与位置数据平台。资源需求明显高于 Zero，应独立部署并通过 MQTT 联动。',
+    href: 'https://github.com/teslamate-org/teslamate',
+  },
+  {
+    status: '高级方案',
+    fit: '公网服务器',
+    name: 'Fleet Telemetry',
+    copy: 'Tesla 官方实时遥测接收端，需要公网 TLS、证书和严格隐私控制，不适合直接跑在车内 Zero。',
+    href: 'https://github.com/teslamotors/fleet-telemetry',
+  },
+  {
+    status: '独立车载 Pi',
+    fit: 'Pi 4 / Pi 5',
+    name: 'RaspAP / OpenAuto Prodigy',
+    copy: '分别面向车载热点/VPN 网关与 Android Auto 副屏；建议使用第二块树莓派，避免争用 TeslaUSB 网络与 USB。',
+    href: 'https://github.com/RaspAP/raspap-webgui',
+  },
+];
+
 export default function Home() {
   return (
     <main>
@@ -34,6 +79,7 @@ export default function Home() {
         <div className="navLinks">
           <a href="#capabilities">能力</a>
           <a href="#architecture">架构</a>
+          <a href="#ecosystem">生态</a>
           <a href="#localization">本地化</a>
           <a href="#flash">刷写</a>
         </div>
@@ -105,9 +151,30 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="section ecosystem" id="ecosystem">
+        <div className="shell">
+          <div className="ecosystemIntro">
+            <div className="sectionHead inverse"><p className="kicker">03 / OPEN-SOURCE ECOSYSTEM</p><h2>能组合，不代表<br />都该塞进 Zero。</h2></div>
+            <p>按运行位置和硬件能力拆分：轻量、安全边界清晰的能力进入镜像；视频计算、遥测数据库和车载副屏留在 NAS、服务器或独立树莓派。</p>
+          </div>
+          <div className="projectGrid">
+            {ecosystem.map((project) => (
+              <a className="projectCard" href={project.href} target="_blank" rel="noreferrer" key={project.name}>
+                <div className="projectMeta"><span>{project.status}</span><em>{project.fit}</em></div>
+                <h3>{project.name}</h3>
+                <p>{project.copy}</p>
+                <i>查看项目 ↗</i>
+              </a>
+            ))}
+          </div>
+          <div className="ecosystemDecision"><span>NEXT</span><p><b>建议下一步：</b>先评估 File Browser 的只读根文件系统适配、认证迁移和挂载白名单；再为 <code>tesla_dashcam</code> 增加 NAS 端触发模板。两项都不增加车辆写盘路径的风险。</p></div>
+          <a className="ecosystemDecision hardwareDecision" href="https://github.com/JuneLeGency/teslausb/tree/master/hardware/enclosure" target="_blank" rel="noreferrer"><span>3D</span><p><b>Pi Zero 车载外壳：</b>提供标准版与棱角 Cybercase、可编辑 OpenSCAD、即打 STL、双色徽标和 1.2 mm 孔位试配规；所有关键尺寸均可追溯到 Raspberry Pi 官方机械图。查看模型与打印指南 ↗</p></a>
+        </div>
+      </section>
+
       <section className="section localization" id="localization">
         <div className="shell localeGrid">
-          <div className="sectionHead"><p className="kicker">03 / LOCALIZATION</p><h2>本地化，做到哪一步了？</h2><p>基础系统、摄像头查看器、常用通知和使用入口已经面向中国大陆环境；底层日志保留少量上游英文，便于检索故障。</p></div>
+          <div className="sectionHead"><p className="kicker">04 / LOCALIZATION</p><h2>本地化，做到哪一步了？</h2><p>基础系统、摄像头查看器、常用通知和使用入口已经面向中国大陆环境；底层日志保留少量上游英文，便于检索故障。</p></div>
           <div className="audit">
             {localization.map(([name, value, status]) => (
               <div className="auditRow" key={name}><span className={`auditDot ${status}`} /><b>{name}</b><span>{value}</span><em>{status === 'done' ? '已完成' : '待推进'}</em></div>
@@ -118,7 +185,7 @@ export default function Home() {
 
       <section className="section flash" id="flash">
         <div className="shell">
-          <div className="sectionHead centered inverse"><p className="kicker">04 / FLASH & RUN</p><h2>从镜像到车内，四步完成。</h2><p>推荐 Pi Zero 2 W 与 128GB 高耐久卡。Zero W 也可使用本项目的 32 位 ARMHF 镜像。</p></div>
+          <div className="sectionHead centered inverse"><p className="kicker">05 / FLASH & RUN</p><h2>从镜像到车内，四步完成。</h2><p>推荐 Pi Zero 2 W 与 128GB 高耐久卡。Zero W 也可使用本项目的 32 位 ARMHF 镜像。</p></div>
           <div className="steps">
             <article><span>01</span><h3>校验镜像</h3><p>下载 `.img.zip`，核对随包提供的 SHA‑256。</p></article>
             <article><span>02</span><h3>写入 SD 卡</h3><p>使用 Raspberry Pi Imager，选择自定义镜像直接刷写。</p></article>

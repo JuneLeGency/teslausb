@@ -20,7 +20,7 @@ TeslaUSB 通过 USB Gadget 模拟车辆可识别的存储设备。车辆照常�
 - 支持 Wi‑Fi 热点、温度监测、只读根文件系统和独立数据盘；
 - 可通过 TeslaFi、Tessie、BLE 或 Webhook 等方式辅助车辆保持唤醒。
 
-完整数据流和安全边界见 [核心架构](doc/ARCHITECTURE.zh-CN.md)，本地化现状见 [本地化审计](doc/LOCALIZATION.zh-CN.md)，通知和素材盘配置见 [中文配置指南](doc/CONFIGURATION.zh-CN.md)。
+完整数据流和安全边界见 [核心架构](doc/ARCHITECTURE.zh-CN.md)，本地化现状见 [本地化审计](doc/LOCALIZATION.zh-CN.md)，通知和素材盘配置见 [中文配置指南](doc/CONFIGURATION.zh-CN.md)，候选项目与部署边界见 [开源生态评估](doc/OPEN_SOURCE_ECOSYSTEM.zh-CN.md)。3D 打印标准版与 Cybercase 车载外壳、官方机械图及试配规见 [Pi Zero 外壳设计](hardware/enclosure/README.zh-CN.md)。
 
 ## 硬件与镜像
 
@@ -83,6 +83,7 @@ setup/            首次启动、分区和服务配置
 run/              设备运行时与 USB Gadget 脚本
 archive/          CIFS/NFS/rsync/rclone 归档适配器
 doc/              安装、配置、架构及本地化文档
+hardware/         Pi Zero 车载外壳源文件、STL 与官方尺寸参考
 site/             中文能力介绍网站
 ```
 
