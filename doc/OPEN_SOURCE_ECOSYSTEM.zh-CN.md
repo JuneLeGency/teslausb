@@ -9,7 +9,6 @@
 | [Tesla Vehicle Command](https://github.com/teslamotors/vehicle-command) | Pi Zero / Zero 2 W | 已部分接入 | Tesla 官方 Apache-2.0 工具；当前已使用 `tesla-control` 和 `tesla-keygen` 处理 BLE 唤醒 |
 | [Mosquitto MQTT Client](https://mosquitto.org/man/mosquitto_pub-1.html) | Pi Zero / Zero 2 W | 推荐接入 | `mosquitto_pub` 是发送单条消息后退出的轻量客户端；Broker 继续运行在 Home Assistant、NAS 或服务器 |
 | [copyparty](https://github.com/9001/copyparty) | Pi Zero / Zero 2 W | 已接入 | 纯 Python 单文件服务，仅管理素材暂存区；禁用媒体解析并由 systemd 限制权限和内存 |
-| [2048](https://github.com/gabrielecirulli/2048) | 手机/车机浏览器 | 已接入 | MIT 许可纯静态游戏；Zero 只提供文件，不承担游戏计算 |
 | [File Browser](https://github.com/filebrowser/filebrowser/releases) | 不再默认内置 | 停止推进 | 原项目已宣布 2026-09-01 归档且不再提供修复；不能作为新镜像的长期安全依赖 |
 | [FileBrowser Quantum](https://github.com/gtsteffaniak/filebrowser) | Zero 2 W 观察项 | 暂不内置 | 项目仍在快速演进；ARM32 slim 包值得测试，但 Zero W 的 ARMv6、内存和只读根适配尚未完成验收 |
 | [tesla_dashcam](https://github.com/ehendrix23/tesla_dashcam) | NAS / PC | 推荐伴生 | 能把多摄像头分段合成完整视频；FFmpeg 运算不应占用 Zero 的归档窗口 |

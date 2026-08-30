@@ -24,14 +24,6 @@ curl -fL --retry 5 --retry-delay 3 \
   "https://github.com/9001/copyparty/releases/download/${COPYPARTY_VERSION}/copyparty.pyz"
 echo "$COPYPARTY_SHA256  $WEBUI_DIR/copyparty-${COPYPARTY_VERSION}.pyz" | sha256sum -c -
 
-# Cache a pinned MIT-licensed offline game for the parking portal.
-GAME2048_COMMIT=478b6ec346e3787f589e4af751378d06ded4cbbc
-GAME2048_SHA256=4f3e35b3b9124c5a5c16231b71684288d8d781c2d534754f6b36119336231e2e
-curl -fL --retry 5 --retry-delay 3 \
-  -o "$WEBUI_DIR/2048-${GAME2048_COMMIT}.tar.gz" \
-  "https://github.com/gabrielecirulli/2048/archive/${GAME2048_COMMIT}.tar.gz"
-echo "$GAME2048_SHA256  $WEBUI_DIR/2048-${GAME2048_COMMIT}.tar.gz" | sha256sum -c -
-
 # ensure dwc2 module is loaded
 grep -qxF "dtoverlay=dwc2" "${ROOTFS_DIR}/boot/firmware/config.txt" || echo "dtoverlay=dwc2" >> "${ROOTFS_DIR}/boot/firmware/config.txt"
 

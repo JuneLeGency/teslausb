@@ -71,33 +71,6 @@ then
   ln -s /var/www/html/favicon.ico /var/www/html/new/favicon.ico
 fi
 
-# Install a pinned, verified offline game. It executes in the client browser,
-# so it adds no runtime load to the Pi Zero beyond serving static files.
-readonly GAME2048_COMMIT=478b6ec346e3787f589e4af751378d06ded4cbbc
-readonly GAME2048_SHA256=4f3e35b3b9124c5a5c16231b71684288d8d781c2d534754f6b36119336231e2e
-readonly GAME2048_CACHE="/usr/share/teslausb/2048-${GAME2048_COMMIT}.tar.gz"
-if [ -f "$GAME2048_CACHE" ]
-then
-  cp "$GAME2048_CACHE" /tmp/2048.tar.gz
-else
-  curlwrapper -L -o /tmp/2048.tar.gz "https://github.com/gabrielecirulli/2048/archive/${GAME2048_COMMIT}.tar.gz"
-fi
-echo "$GAME2048_SHA256  /tmp/2048.tar.gz" | sha256sum -c -
-mkdir -p /var/www/html/parking/2048
-tar -C /var/www/html/parking/2048 -xzf /tmp/2048.tar.gz --strip-components=1
-sed -i \
-  -e 's/<html>/<html lang="zh-CN">/' \
-  -e 's/Join the numbers and get to the/合并相同数字，挑战/' \
-  -e 's/New Game/新游戏/' \
-  -e 's/Keep going/继续挑战/' \
-  -e 's/Try again/再来一次/' \
-  -e 's#<strong class="important">How to play:</strong>.*#<strong class="important">玩法：</strong> 使用方向键或在屏幕上滑动；相同数字相遇后会合并。#' \
-  /var/www/html/parking/2048/index.html
-sed -i \
-  -e 's/"You win!"/"挑战成功！"/' \
-  -e 's/"Game over!"/"游戏结束"/' \
-  /var/www/html/parking/2048/js/html_actuator.js
-
 function configure_asset_library () {
   local -r username=${ASSET_LIBRARY_USERNAME:-teslausb}
   local -r password=${ASSET_LIBRARY_PASSWORD:-3.1415926}

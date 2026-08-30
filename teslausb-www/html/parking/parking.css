@@ -17,7 +17,6 @@ h1 em { color:var(--red); font-style:normal; }
 .quick-card,.tool { border:1px solid var(--line); border-radius:18px; background:var(--panel); }
 .quick-card { min-height:230px; padding:25px; transition:transform .18s ease,border-color .18s ease; }
 .quick-card:hover { transform:translateY(-3px); border-color:#4b5665; }
-.quick-card.game { background:linear-gradient(140deg,#46202a,#161b24 65%); }
 .quick-card.drop { background:linear-gradient(140deg,#17382f,#161b24 65%); }
 .quick-card h2 { margin:55px 0 10px; font-size:24px; }
 .quick-card p { color:var(--muted); font-size:12px; }
