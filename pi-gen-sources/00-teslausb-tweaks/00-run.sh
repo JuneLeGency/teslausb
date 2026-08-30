@@ -16,6 +16,22 @@ curl -fL --retry 5 --retry-delay 3 \
   "https://github.com/marcone/teslausb-webui/releases/download/${WEBUI_VERSION}/teslausb-ui.tgz"
 echo "$WEBUI_SHA256  $WEBUI_DIR/teslausb-ui-${WEBUI_VERSION}.tgz" | sha256sum -c -
 
+# Cache the verified, architecture-independent asset drop service.
+COPYPARTY_VERSION=v1.20.21
+COPYPARTY_SHA256=43ac488742715f10ecec03e29f7562d3be66f2976644b3af55d43043fa25c8fa
+curl -fL --retry 5 --retry-delay 3 \
+  -o "$WEBUI_DIR/copyparty-${COPYPARTY_VERSION}.pyz" \
+  "https://github.com/9001/copyparty/releases/download/${COPYPARTY_VERSION}/copyparty.pyz"
+echo "$COPYPARTY_SHA256  $WEBUI_DIR/copyparty-${COPYPARTY_VERSION}.pyz" | sha256sum -c -
+
+# Cache a pinned MIT-licensed offline game for the parking portal.
+GAME2048_COMMIT=478b6ec346e3787f589e4af751378d06ded4cbbc
+GAME2048_SHA256=4f3e35b3b9124c5a5c16231b71684288d8d781c2d534754f6b36119336231e2e
+curl -fL --retry 5 --retry-delay 3 \
+  -o "$WEBUI_DIR/2048-${GAME2048_COMMIT}.tar.gz" \
+  "https://github.com/gabrielecirulli/2048/archive/${GAME2048_COMMIT}.tar.gz"
+echo "$GAME2048_SHA256  $WEBUI_DIR/2048-${GAME2048_COMMIT}.tar.gz" | sha256sum -c -
+
 # ensure dwc2 module is loaded
 grep -qxF "dtoverlay=dwc2" "${ROOTFS_DIR}/boot/firmware/config.txt" || echo "dtoverlay=dwc2" >> "${ROOTFS_DIR}/boot/firmware/config.txt"
 

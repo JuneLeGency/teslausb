@@ -11,6 +11,8 @@ const capabilities = [
   ['WEB', '中文摄像头查看器', '内置并校验 WebUI v1.2.1，默认简体中文；局域网回看、下载多摄像头录像。'],
   ['RET', '扩展录像保留', '保存更多 RecentClips，并根据剩余空间自动清理，优先保证车辆持续写入。'],
   ['MSG', '国内通知与车机素材', '钉钉、企业微信、飞书统一接入；网页管理锁车音、灯光秀和车身贴图。'],
+  ['FUN', '停车工具箱', '离线 2048、停车计时、充电估算、胎压换算与氛围灯；计算全部在浏览器完成。'],
+  ['DROP', '隔离素材仓', '热点内投递手机文件，先进入独立暂存区，不直接写车辆正在使用的 USB 盘。'],
 ];
 
 const localization = [
@@ -32,11 +34,11 @@ const ecosystem = [
     href: 'https://github.com/teslamotors/vehicle-command',
   },
   {
-    status: '优先候选',
-    fit: 'Pi Zero / Zero 2 W',
-    name: 'File Browser',
-    copy: '单文件网页管理器，官方提供 ARMv6/ARMv7 构建；适合升级锁车音、灯光秀和贴图素材管理。',
-    href: 'https://github.com/filebrowser/filebrowser',
+    status: '建议接入',
+    fit: 'Pi Zero / 外部 Broker',
+    name: 'Mosquitto MQTT Client',
+    copy: '只安装轻量发布客户端，把归档、温度、磁盘和在线状态送往 Home Assistant；Broker 不放在 Zero。',
+    href: 'https://mosquitto.org/man/mosquitto_pub-1.html',
   },
   {
     status: '归档端推荐',
@@ -68,6 +70,15 @@ const ecosystem = [
   },
 ];
 
+const zeroRoadmap = [
+  ['P0', 'Web 配置中心', '校验配置、遮蔽密钥、测试通知并生成可回退的变更；复用现有 Nginx 与只读根文件系统。', '低'],
+  ['P0', '一键诊断包', '汇总服务、USB Gadget、磁盘、温度和脱敏日志，方便手机直接下载后排障。', '低'],
+  ['P0', '车机素材仓', '安全管理锁车音、灯光秀与贴图；只有车辆释放对应 LUN 后才允许写入。', '中'],
+  ['P1', 'MQTT 事件出口', '向外部 Home Assistant / Mosquitto 发布归档完成、存储余量、温度和在线状态。', '低'],
+  ['P1', '热点配网向导', '复用 NetworkManager 热点，扫码进入页面添加家庭 Wi-Fi、测试连通性并自动回退。', '低'],
+  ['P1', '录像轻量索引', '仅用文件元数据与 SQLite 建索引、查重复和校验完整性；不在 Zero 上转码。', '中'],
+];
+
 export default function Home() {
   return (
     <main>
@@ -79,9 +90,9 @@ export default function Home() {
         <div className="navLinks">
           <a href="#capabilities">能力</a>
           <a href="#architecture">架构</a>
+          <a href="#roadmap">路线图</a>
+          <a href="/guides/notifications">教程</a>
           <a href="#ecosystem">生态</a>
-          <a href="#localization">本地化</a>
-          <a href="#flash">刷写</a>
         </div>
         <a className="navCta" href="#flash">开始部署</a>
       </nav>
@@ -96,7 +107,7 @@ export default function Home() {
           </p>
           <div className="actions">
             <a className="primary" href="#flash">查看刷写指南 <span>↘</span></a>
-            <a className="secondary" href="#architecture">理解工作原理</a>
+            <a className="secondary" href="/guides/notifications">配置通知 Step by Step</a>
           </div>
           <div className="proof" aria-label="镜像特性">
             <span><b>32-bit</b> 兼容 Zero W</span>
@@ -151,10 +162,40 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="section roadmap" id="roadmap">
+        <div className="shell">
+          <div className="roadmapIntro">
+            <div className="sectionHead"><p className="kicker">03 / ZERO IMAGE ROADMAP</p><h2>下一批能力，<br />先守住 Zero 的边界。</h2></div>
+            <p>优先选择低常驻内存、无数据库服务依赖、能在只读根文件系统上运行的功能。任何素材写入都必须服从 USB LUN 的互斥规则。</p>
+          </div>
+          <div className="roadmapGrid">
+            {zeroRoadmap.map(([priority, title, copy, cost]) => (
+              <article className="roadmapCard" key={title}>
+                <div><span>{priority}</span><em>资源 {cost}</em></div>
+                <h3>{title}</h3><p>{copy}</p>
+              </article>
+            ))}
+          </div>
+          <div className="boundary"><span>KEEP OUT</span><p><b>不塞入 Zero：</b>多路视频拼接、TeslaMate 数据库、Fleet Telemetry 服务端、完整 RaspAP / Android Auto 栈。它们应运行在 NAS、服务器或第二块树莓派上。</p></div>
+        </div>
+      </section>
+
+      <section className="section guidePromo" id="guides">
+        <div className="shell guidePromoGrid">
+          <div className="sectionHead inverse"><p className="kicker">04 / STEP BY STEP</p><h2>归档结束，<br />让消息主动找你。</h2><p>钉钉、企业微信、飞书已经内置适配器。教程从创建群机器人开始，一直到设备端测试与故障排查。</p><a className="guideButton" href="/guides/notifications">打开完整通知教程 <span>→</span></a></div>
+          <div className="channelStack" aria-label="支持的国内通知渠道">
+            <article><span>01</span><div><b>钉钉</b><small>自定义机器人 · 可选加签</small></div><em>DINGTALK</em></article>
+            <article><span>02</span><div><b>企业微信</b><small>群机器人 · Webhook</small></div><em>WECOM</em></article>
+            <article><span>03</span><div><b>飞书</b><small>自定义机器人 · 可选签名</small></div><em>FEISHU</em></article>
+            <div className="guideSequence"><b>创建机器人</b><i>→</i><b>写入配置</b><i>→</i><b>手动测试</b><i>→</i><b>重启生效</b></div>
+          </div>
+        </div>
+      </section>
+
       <section className="section ecosystem" id="ecosystem">
         <div className="shell">
           <div className="ecosystemIntro">
-            <div className="sectionHead inverse"><p className="kicker">03 / OPEN-SOURCE ECOSYSTEM</p><h2>能组合，不代表<br />都该塞进 Zero。</h2></div>
+            <div className="sectionHead inverse"><p className="kicker">05 / OPEN-SOURCE ECOSYSTEM</p><h2>能组合，不代表<br />都该塞进 Zero。</h2></div>
             <p>按运行位置和硬件能力拆分：轻量、安全边界清晰的能力进入镜像；视频计算、遥测数据库和车载副屏留在 NAS、服务器或独立树莓派。</p>
           </div>
           <div className="projectGrid">
@@ -167,14 +208,14 @@ export default function Home() {
               </a>
             ))}
           </div>
-          <div className="ecosystemDecision"><span>NEXT</span><p><b>建议下一步：</b>先评估 File Browser 的只读根文件系统适配、认证迁移和挂载白名单；再为 <code>tesla_dashcam</code> 增加 NAS 端触发模板。两项都不增加车辆写盘路径的风险。</p></div>
+          <div className="ecosystemDecision"><span>NEXT</span><p><b>建议下一步：</b>直接扩展现有 WebUI 的配置、通知测试和素材安全能力；旧 File Browser 已宣布停止后续维护，不再作为镜像默认组件。视频拼接继续通过归档触发器交给 NAS。</p></div>
           <a className="ecosystemDecision hardwareDecision" href="https://github.com/JuneLeGency/teslausb/tree/master/hardware/enclosure" target="_blank" rel="noreferrer"><span>3D</span><p><b>Pi Zero 车载外壳：</b>提供标准版与棱角 Cybercase、可编辑 OpenSCAD、即打 STL、双色徽标和 1.2 mm 孔位试配规；所有关键尺寸均可追溯到 Raspberry Pi 官方机械图。查看模型与打印指南 ↗</p></a>
         </div>
       </section>
 
       <section className="section localization" id="localization">
         <div className="shell localeGrid">
-          <div className="sectionHead"><p className="kicker">04 / LOCALIZATION</p><h2>本地化，做到哪一步了？</h2><p>基础系统、摄像头查看器、常用通知和使用入口已经面向中国大陆环境；底层日志保留少量上游英文，便于检索故障。</p></div>
+          <div className="sectionHead"><p className="kicker">06 / LOCALIZATION</p><h2>本地化，做到哪一步了？</h2><p>基础系统、摄像头查看器、常用通知和使用入口已经面向中国大陆环境；底层日志保留少量上游英文，便于检索故障。</p></div>
           <div className="audit">
             {localization.map(([name, value, status]) => (
               <div className="auditRow" key={name}><span className={`auditDot ${status}`} /><b>{name}</b><span>{value}</span><em>{status === 'done' ? '已完成' : '待推进'}</em></div>
@@ -185,12 +226,17 @@ export default function Home() {
 
       <section className="section flash" id="flash">
         <div className="shell">
-          <div className="sectionHead centered inverse"><p className="kicker">05 / FLASH & RUN</p><h2>从镜像到车内，四步完成。</h2><p>推荐 Pi Zero 2 W 与 128GB 高耐久卡。Zero W 也可使用本项目的 32 位 ARMHF 镜像。</p></div>
+          <div className="sectionHead centered inverse"><p className="kicker">07 / FLASH & RUN</p><h2>从镜像到车内，四步完成。</h2><p>推荐 Pi Zero 2 W 与 128GB 高耐久卡。Zero W 也可使用本项目的 32 位 ARMHF 镜像。</p></div>
           <div className="steps">
             <article><span>01</span><h3>校验镜像</h3><p>下载 `.img.zip`，核对随包提供的 SHA‑256。</p></article>
             <article><span>02</span><h3>写入 SD 卡</h3><p>使用 Raspberry Pi Imager，选择自定义镜像直接刷写。</p></article>
             <article><span>03</span><h3>填写配置</h3><p>配置 Wi‑Fi 和归档端；首次建议先用 `ARCHIVE_SYSTEM=none`。</p></article>
             <article><span>04</span><h3>先电源后上车</h3><p>稳定供电完成首次初始化，再用数据线连接 Zero 的 USB OTG 口。</p></article>
+          </div>
+          <div className="defaultAccess" aria-label="TeslaUSB 默认维护热点">
+            <div><span>DEFAULT AP</span><h3>TeslaUSB 自身维护热点</h3><p>离开家庭 Wi-Fi 后，用手机连接热点并打开管理地址。这是公开的便捷默认值，可在配置文件中修改。</p></div>
+            <dl><div><dt>Wi-Fi</dt><dd>TeslaUSB-Zero</dd></div><div><dt>密码</dt><dd>3.1415926</dd></div><div><dt>管理地址</dt><dd>192.168.66.1</dd></div></dl>
+            <a href="http://192.168.66.1/">连接后打开 →</a>
           </div>
           <div className="warning"><span>!</span><p><b>外接盘提醒</b>　配置 `DATA_DRIVE` 可能重建目标盘分区。必须核对设备并提前备份。</p></div>
         </div>

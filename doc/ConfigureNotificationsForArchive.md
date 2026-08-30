@@ -1,3 +1,5 @@
+> 中文用户：钉钉、企业微信、飞书及设备端测试步骤见 [TeslaUSB 国内通知配置教程](NOTIFICATIONS.zh-CN.md)。
+
 OPTIONAL: You can choose to integrate with [Pushover](https://pushover.net), [Gotify](https://gotify.net/), [IFTTT](https://ifttt.com), [Telegram](https://telegram.org), [AWS SNS](https://aws.amazon.com/sns/), and/or [Discord](https://discord.com/) to get a push/email notification to your phone when the copy process is done. Depending on your wireless network speed/connection, copying files may take some time, so a push notification can help confirm that the process finished. If no files were copied (i.e. all manually saved dashcam files were already copied, no notification will be sent.).
 
 # Pushover

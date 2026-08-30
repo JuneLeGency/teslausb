@@ -17,10 +17,11 @@ TeslaUSB 通过 USB Gadget 模拟车辆可识别的存储设备。车辆照常�
 - 内置固定版本、校验过的摄像头 Web 查看器，默认简体中文，可浏览和下载多摄像头录像；
 - 支持钉钉、企业微信、飞书及 Signal、Telegram、Discord、Slack、Matrix、ntfy、Gotify、Webhook 等通知；
 - 网页管理锁车音、灯光秀和自定义车身贴图素材；独立盘避免与 `TeslaCam` 目录冲突；
+- 内置隔离的素材仓/文件投递暂存区，以及停车计时、充电估算、胎压换算、氛围灯和离线 2048；
 - 支持 Wi‑Fi 热点、温度监测、只读根文件系统和独立数据盘；
 - 可通过 TeslaFi、Tessie、BLE 或 Webhook 等方式辅助车辆保持唤醒。
 
-完整数据流和安全边界见 [核心架构](doc/ARCHITECTURE.zh-CN.md)，本地化现状见 [本地化审计](doc/LOCALIZATION.zh-CN.md)，通知和素材盘配置见 [中文配置指南](doc/CONFIGURATION.zh-CN.md)，当前设备的 Wi‑Fi 与 Bitwarden SSH Agent 配置见 [设备部署记录](doc/DEVICE_PROVISIONING.zh-CN.md)，候选项目与部署边界见 [开源生态评估](doc/OPEN_SOURCE_ECOSYSTEM.zh-CN.md)。3D 打印标准版与 Cybercase 车载外壳、官方机械图及试配规见 [Pi Zero 外壳设计](hardware/enclosure/README.zh-CN.md)。
+完整数据流和安全边界见 [核心架构](doc/ARCHITECTURE.zh-CN.md)，本地化现状见 [本地化审计](doc/LOCALIZATION.zh-CN.md)，钉钉/企业微信/飞书的逐步设置见 [国内通知配置教程](doc/NOTIFICATIONS.zh-CN.md)，其他变量和素材盘见 [中文配置指南](doc/CONFIGURATION.zh-CN.md)，当前设备的 Wi‑Fi 与 Bitwarden SSH Agent 配置见 [设备部署记录](doc/DEVICE_PROVISIONING.zh-CN.md)，候选项目与部署边界见 [开源生态评估](doc/OPEN_SOURCE_ECOSYSTEM.zh-CN.md)，小特等来源的锁车音、灯光秀与皮肤整理计划见 [车机素材库路线图](doc/ASSET_LIBRARY.zh-CN.md)，固定版本与许可证见 [第三方组件清单](doc/THIRD_PARTY.zh-CN.md)。3D 打印标准版与 Cybercase 车载外壳、官方机械图及试配规见 [Pi Zero 外壳设计](hardware/enclosure/README.zh-CN.md)。
 
 ## 硬件与镜像
 
@@ -30,7 +31,7 @@ TeslaUSB 通过 USB Gadget 模拟车辆可识别的存储设备。车辆照常�
 | 存储卡 | 最低 64GB，推荐 128GB 或更大、高耐久型号 |
 | 系统 | Raspberry Pi OS Bookworm，32 位 ARMHF |
 | 连接线 | Zero 系列使用支持数据的 USB-A ↔ Micro-USB 线，接入标有 `USB` 的 OTG 口 |
-| 网络 | 停车位置能连接 WPA2 Wi‑Fi；首次启动可使用 TeslaUSB 热点配置 |
+| 网络 | 停车位置能连接 WPA2 Wi‑Fi；默认维护热点为 `TeslaUSB-Zero`，密码 `3.1415926`，管理地址 `192.168.66.1` |
 
 不带无线网络的初代 Pi Zero 需要额外网络方案，不建议作为默认部署目标。
 

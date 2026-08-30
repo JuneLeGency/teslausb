@@ -49,7 +49,23 @@ NFS 需要服务器正确授权树莓派所在网段；rclone 需要先创建 re
 
 ## Web UI 与热点
 
-镜像内置并校验 `teslausb-webui v1.2.1`，首次访问默认简体中文，可切换语言。启用 Web UI 后应设置独立用户名和强密码。TeslaUSB 热点只用于首次配置或故障恢复，完成家庭 Wi‑Fi 配置后不要把它作为长期公网入口。
+镜像内置并校验 `teslausb-webui v1.2.1`，首次访问默认简体中文，可切换语言。中文镜像默认广播维护热点 `TeslaUSB-Zero`，密码 `3.1415926`，管理地址 `http://192.168.66.1/`。这是公开的便捷默认值；如需修改，可设置 `AP_SSID`、`AP_PASS` 和 `AP_IP`。热点用于首次配置、车外维护或故障恢复，不应直接暴露到公网。
+
+### 素材仓与文件投递
+
+镜像默认启用 `copyparty` 素材暂存服务，入口为 `http://192.168.66.1/assets/`。默认账号 `teslausb`，密码与公开维护热点相同。可在刷写配置中修改或关闭：
+
+```bash
+export ASSET_LIBRARY_ENABLED=true
+export ASSET_LIBRARY_USERNAME='teslausb'
+export ASSET_LIBRARY_PASSWORD='3.1415926'
+```
+
+上传文件只进入 `/mutable/assets/inbox`，不会直接写 LightShow、Boombox、Custom 或 TeslaCam 盘。这样即使车辆仍连接 USB，也不会产生双端同时写盘。
+
+### 停车工具箱
+
+连接维护热点后打开 `http://192.168.66.1/parking/`，可使用离线 2048、停车计时、充电时间/费用估算、胎压换算和全屏氛围灯。页面全部本地运行，仅供安全停车后使用。
 
 ## 锁车音、灯光秀与自定义贴图
 
@@ -62,6 +78,8 @@ export CUSTOM_SIZE=500M
 系统分别创建 `LightShow/`、`Boombox/` 和 `Wraps/` 目录，并作为独立 USB 盘暴露给车辆。网页文件管理器可上传素材；兼容音频还能一键复制为盘根目录的 `LockChime.wav`。不同车型和车机版本支持的贴图格式可能不同，最终以车机 Paint Shop/自定义贴图导入界面的提示为准。
 
 ## 钉钉、企业微信与飞书通知
+
+从创建群机器人、写入设备、手动测试到排障的完整步骤见 [国内通知配置教程](NOTIFICATIONS.zh-CN.md)。
 
 ```bash
 export NOTIFICATION_TITLE='我的 TeslaUSB 通知'

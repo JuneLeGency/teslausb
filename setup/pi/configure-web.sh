@@ -71,6 +71,153 @@ then
   ln -s /var/www/html/favicon.ico /var/www/html/new/favicon.ico
 fi
 
+# Install a pinned, verified offline game. It executes in the client browser,
+# so it adds no runtime load to the Pi Zero beyond serving static files.
+readonly GAME2048_COMMIT=478b6ec346e3787f589e4af751378d06ded4cbbc
+readonly GAME2048_SHA256=4f3e35b3b9124c5a5c16231b71684288d8d781c2d534754f6b36119336231e2e
+readonly GAME2048_CACHE="/usr/share/teslausb/2048-${GAME2048_COMMIT}.tar.gz"
+if [ -f "$GAME2048_CACHE" ]
+then
+  cp "$GAME2048_CACHE" /tmp/2048.tar.gz
+else
+  curlwrapper -L -o /tmp/2048.tar.gz "https://github.com/gabrielecirulli/2048/archive/${GAME2048_COMMIT}.tar.gz"
+fi
+echo "$GAME2048_SHA256  /tmp/2048.tar.gz" | sha256sum -c -
+mkdir -p /var/www/html/parking/2048
+tar -C /var/www/html/parking/2048 -xzf /tmp/2048.tar.gz --strip-components=1
+sed -i \
+  -e 's/<html>/<html lang="zh-CN">/' \
+  -e 's/Join the numbers and get to the/合并相同数字，挑战/' \
+  -e 's/New Game/新游戏/' \
+  -e 's/Keep going/继续挑战/' \
+  -e 's/Try again/再来一次/' \
+  -e 's#<strong class="important">How to play:</strong>.*#<strong class="important">玩法：</strong> 使用方向键或在屏幕上滑动；相同数字相遇后会合并。#' \
+  /var/www/html/parking/2048/index.html
+sed -i \
+  -e 's/"You win!"/"挑战成功！"/' \
+  -e 's/"Game over!"/"游戏结束"/' \
+  /var/www/html/parking/2048/js/html_actuator.js
+
+function configure_asset_library () {
+  local -r username=${ASSET_LIBRARY_USERNAME:-teslausb}
+  local -r password=${ASSET_LIBRARY_PASSWORD:-3.1415926}
+  if [[ ! "$username" =~ ^[A-Za-z0-9._-]+$ ]]
+  then
+    setup_progress "asset library username contains unsupported characters"
+    return 1
+  fi
+  if (( ${#password} < 8 )) || [[ "$password" =~ [[:space:]:] ]]
+  then
+    setup_progress "asset library password must be at least 8 characters and cannot contain whitespace or ':'"
+    return 1
+  fi
+
+  readonly COPYPARTY_VERSION=v1.20.21
+  readonly COPYPARTY_SHA256=43ac488742715f10ecec03e29f7562d3be66f2976644b3af55d43043fa25c8fa
+  readonly COPYPARTY_CACHE="/usr/share/teslausb/copyparty-${COPYPARTY_VERSION}.pyz"
+  if [ -f "$COPYPARTY_CACHE" ]
+  then
+    cp "$COPYPARTY_CACHE" /tmp/copyparty.pyz
+  else
+    curlwrapper -L -o /tmp/copyparty.pyz "https://github.com/9001/copyparty/releases/download/${COPYPARTY_VERSION}/copyparty.pyz"
+  fi
+  echo "$COPYPARTY_SHA256  /tmp/copyparty.pyz" | sha256sum -c -
+
+  getent group copyparty > /dev/null || groupadd --system copyparty
+  id -u copyparty > /dev/null 2>&1 || useradd --system --gid copyparty --home-dir /nonexistent --shell /usr/sbin/nologin copyparty
+  install -d -m 0755 /usr/local/lib/teslausb
+  install -m 0555 /tmp/copyparty.pyz /usr/local/lib/teslausb/copyparty.pyz
+  install -d -o copyparty -g copyparty -m 0700 /mutable/assets /mutable/assets/inbox /mutable/assets/.copyparty /mutable/assets/.config
+  install -d -o root -g copyparty -m 0750 /etc/teslausb
+
+  cat > /etc/teslausb/copyparty.conf << EOF
+[global]
+  i: 127.0.0.1
+  p: 3923
+  rp-loc: /assets
+  name: TeslaUSB Asset Drop
+  usernames
+  glang
+  j: 1
+  nc: 8
+  rproxy: 1
+  xff-src: 127.0.0.1
+  hist: /mutable/assets/.copyparty
+  df: 0.25
+  dotpart
+  no-thumb
+  no-mtag-ff
+  no-robots
+  force-js
+  no-html
+  no-readme
+  no-logues
+  no-dav
+  xvol
+  logout: 24
+  ban-pw: 5,60,300
+
+[accounts]
+  ${username}: ${password}
+
+[/]
+  /mutable/assets/inbox
+  accs:
+    rwmd: ${username}
+EOF
+  chown root:copyparty /etc/teslausb/copyparty.conf
+  chmod 0640 /etc/teslausb/copyparty.conf
+
+  cat > /lib/systemd/system/teslausb-assets.service << EOF
+[Unit]
+Description=TeslaUSB asset drop and staging service
+After=mutable.mount network.target
+RequiresMountsFor=/mutable/assets
+
+[Service]
+Type=simple
+User=copyparty
+Group=copyparty
+WorkingDirectory=/mutable/assets
+Environment=XDG_CONFIG_HOME=/mutable/assets/.config
+ExecStart=/usr/bin/python3 /usr/local/lib/teslausb/copyparty.pyz -c /etc/teslausb/copyparty.conf
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateDevices=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/mutable/assets
+ProtectClock=true
+ProtectControlGroups=true
+ProtectHostname=true
+ProtectKernelLogs=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+LockPersonality=true
+MemoryMax=96M
+TasksMax=64
+
+[Install]
+WantedBy=multi-user.target
+EOF
+  systemctl enable teslausb-assets.service
+  setup_progress "asset library configured at /assets/ using copyparty ${COPYPARTY_VERSION}"
+}
+
+if [ "${ASSET_LIBRARY_ENABLED:-true}" = "true" ]
+then
+  configure_asset_library
+else
+  systemctl disable teslausb-assets.service > /dev/null 2>&1 || true
+fi
+
 
 cat > /sbin/mount.ctts << EOF
 #!/bin/bash -eu

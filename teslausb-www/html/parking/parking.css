@@ -1,0 +1,48 @@
+:root { --bg:#0c1016; --panel:#151b24; --line:#29313d; --text:#f5f7f9; --muted:#8b95a3; --red:#e43752; --mint:#8be3c4; }
+* { box-sizing:border-box; }
+html { color-scheme:dark; }
+body { margin:0; background:var(--bg); color:var(--text); font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif; }
+a { color:inherit; text-decoration:none; }
+button,input,select { font:inherit; }
+.topbar { display:flex; justify-content:space-between; align-items:center; min-height:64px; padding:0 max(22px,env(safe-area-inset-left)); border-bottom:1px solid var(--line); font-size:12px; }
+.topbar a { font-weight:750; }
+.topbar span { padding:6px 9px; border-radius:99px; background:#44202a; color:#ffb9c5; font-size:10px; }
+main { width:min(1040px,calc(100% - 34px)); margin:auto; padding:70px 0 54px; }
+.hero { max-width:720px; }
+.eyebrow,.quick-card>span,.tool-head span { color:var(--mint); font:10px monospace; letter-spacing:.12em; }
+h1 { margin:18px 0 22px; font-size:clamp(46px,8vw,78px); line-height:1.02; letter-spacing:-.06em; }
+h1 em { color:var(--red); font-style:normal; }
+.hero>p:last-child { color:var(--muted); line-height:1.75; }
+.quick-grid,.tools-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:58px; }
+.quick-card,.tool { border:1px solid var(--line); border-radius:18px; background:var(--panel); }
+.quick-card { min-height:230px; padding:25px; transition:transform .18s ease,border-color .18s ease; }
+.quick-card:hover { transform:translateY(-3px); border-color:#4b5665; }
+.quick-card.game { background:linear-gradient(140deg,#46202a,#161b24 65%); }
+.quick-card.drop { background:linear-gradient(140deg,#17382f,#161b24 65%); }
+.quick-card h2 { margin:55px 0 10px; font-size:24px; }
+.quick-card p { color:var(--muted); font-size:12px; }
+.quick-card b { display:block; margin-top:28px; font-size:11px; }
+.tools-grid { margin-top:14px; }
+.tool { min-height:320px; padding:25px; }
+.tool-head { display:flex; align-items:center; gap:14px; padding-bottom:20px; border-bottom:1px solid var(--line); }
+.tool-head h2 { margin:0; font-size:18px; }
+.timer { margin-top:34px; font:clamp(42px,7vw,64px)/1 monospace; letter-spacing:-.07em; }
+.timer-tool>p,.light-tool>p { color:var(--muted); font-size:11px; }
+.actions { display:flex; gap:9px; margin-top:30px; }
+button { min-height:42px; padding:0 15px; border:0; border-radius:8px; background:var(--red); color:#fff; cursor:pointer; font-weight:750; }
+button.ghost { border:1px solid var(--line); background:transparent; color:#b7bec8; }
+label { display:grid; grid-template-columns:1fr 1.3fr; align-items:center; gap:12px; margin-top:16px; color:#a3abb6; font-size:11px; }
+input,select { width:100%; min-height:42px; padding:0 12px; border:1px solid #343e4c; border-radius:8px; outline:none; background:#0e131a; color:#fff; }
+input:focus,select:focus { border-color:var(--mint); }
+.result { margin-top:24px; padding:16px; border-radius:9px; background:#0e141b; color:var(--mint); font:12px/1.65 monospace; }
+.charge-tool { grid-column:1 / -1; }
+.form-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0 18px; }
+.swatches { display:flex; gap:10px; margin:28px 0 20px; }
+.swatches button { width:42px; min-height:42px; padding:0; border:2px solid transparent; border-radius:50%; background:var(--swatch); }
+.swatches button:nth-child(1) { --swatch:#fff3d6; }.swatches button:nth-child(2) { --swatch:#ffd7de; }.swatches button:nth-child(3) { --swatch:#d8f4ff; }.swatches button:nth-child(4) { --swatch:#dfffe9; }.swatches button:nth-child(5) { --swatch:#ff3b55; }
+.swatches button.selected { border-color:#fff; box-shadow:0 0 0 3px #ffffff33; }
+.light-tool.fullscreen-light { display:grid; place-items:center; position:fixed; z-index:99; inset:0; border:0; border-radius:0; background:var(--light-color,#fff3d6); }
+.light-tool.fullscreen-light>*:not(#lightFullscreen) { display:none; }
+.light-tool.fullscreen-light #lightFullscreen { opacity:.18; background:#000; }
+.safety { margin:28px 0 0; padding:17px; border:1px solid #51313a; border-radius:10px; background:#25191d; color:#c6aab1; text-align:center; font-size:11px; }
+@media(max-width:700px){ main{padding-top:48px}.quick-grid,.tools-grid,.form-grid{grid-template-columns:1fr}.charge-tool{grid-column:auto}.tool{min-height:auto}.quick-card{min-height:210px}label{grid-template-columns:1fr}.swatches{flex-wrap:wrap} }

@@ -125,17 +125,20 @@ export CAM_SIZE=40G
 # uncomment to enable guest access to the Samba server
 #export SAMBA_GUEST=true
 
-# Uncomment to enable teslausb to act as a wifi access point with the given
-# SSID, so you can access it while on the road. This should work on Raspberry Pi
-# but may not work on other devices.
-#export AP_SSID='TESLAUSB WIFI'
-# Change this! The setup script will not accept the default 'password'
-# Also note that the wifi password must be at least 8 characters.
-#export AP_PASS='password'
-# IP address is optional. The AP will give its clients IP addresses in the
+# 中文镜像默认启用车载维护热点，便于离开家庭 Wi-Fi 后直接管理设备。
+# 这是公开的便捷默认值；如需更高安全性，请在刷写前修改。
+export AP_SSID='TeslaUSB-Zero'
+export AP_PASS='3.1415926'
+# The AP gives its clients IP addresses in the
 # x.x.x.10-254 range so make sure you don't put the AP's IP address in
 # that range.
-#export AP_IP='192.168.66.1'
+export AP_IP='192.168.66.1'
+
+# 中文镜像默认素材仓/文件投递服务。文件先进入 /mutable/assets/inbox，
+# 不直接写车辆正在使用的 USB 盘。
+export ASSET_LIBRARY_ENABLED=true
+export ASSET_LIBRARY_USERNAME='teslausb'
+export ASSET_LIBRARY_PASSWORD='3.1415926'
 
 # Uncomment if you'd like to password protect the teslausb web interface
 # WARNING: Anyone on the $SSID (and $AP_SSID if configured) wifi network can

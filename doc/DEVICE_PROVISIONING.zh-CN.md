@@ -1,6 +1,6 @@
 # 当前设备部署记录
 
-本文件记录 TeslaUSB 设备的非秘密访问配置。Wi‑Fi 密码、系统登录密码、Webhook 和 NAS 凭据不得提交到 Git。
+本文件记录 TeslaUSB 设备的非秘密访问配置。公开维护热点使用固定便捷密码；家庭 Wi‑Fi 密码、系统登录密码、Webhook 和 NAS 凭据不得提交到 Git。
 
 ## 网络
 
@@ -11,6 +11,16 @@
 | 100 | `MiOfLee` | Pi Zero 系列的 2.4 GHz 兼容兜底 |
 
 Raspberry Pi Zero W 和 Zero 2 W 的板载无线网络均只支持 2.4 GHz。名称中带 `5G` 的 SSID 如果只广播 5 GHz，设备会自动跳过并连接 `MiOfLee`。
+
+设备同时广播公开维护热点：
+
+| 项目 | 默认值 |
+| --- | --- |
+| SSID | `TeslaUSB-Zero` |
+| 密码 | `3.1415926` |
+| 管理地址 | `http://192.168.66.1/` |
+
+该凭据用于小众车载维护场景，并作为中文镜像公开默认值。家庭 Wi‑Fi 和 SSH 登录密码不与它一同公开。
 
 首次部署使用 `ARCHIVE_SYSTEM=none`，先验证 USB、Wi‑Fi 和 Web UI；NAS 归档凭据确认后再启用 CIFS、NFS、rsync 或 rclone。
 

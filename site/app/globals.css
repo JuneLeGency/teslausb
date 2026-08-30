@@ -100,6 +100,37 @@ h1 em { color: var(--red); font-style: normal; }
 .safety { grid-column: 1 / -1; display: flex; gap: 25px; margin-top: 12px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 11px; }
 .safety span { color: #777b80; }
 
+.roadmap { background: #e9e5de; }
+.roadmapIntro { display: grid; grid-template-columns: 1fr .72fr; gap: clamp(50px, 9vw, 130px); align-items: end; }
+.roadmapIntro > p { margin: 0 0 5px; color: #686b70; font-size: 15px; line-height: 1.8; }
+.roadmapGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 64px; overflow: hidden; border: 1px solid #cac5bc; border-radius: 18px; background: #cac5bc; }
+.roadmapCard { min-height: 245px; padding: 27px; background: #f6f3ed; }
+.roadmapCard > div { display: flex; align-items: center; justify-content: space-between; }
+.roadmapCard span { padding: 5px 7px; border-radius: 5px; background: var(--ink); color: #fff; font: 9px monospace; }
+.roadmapCard em { color: #898b8e; font: 9px monospace; font-style: normal; }
+.roadmapCard h3 { margin: 57px 0 14px; font-size: 21px; letter-spacing: -.035em; }
+.roadmapCard p { margin: 0; color: #6e7176; font-size: 12px; line-height: 1.8; }
+.boundary { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; margin-top: 22px; padding: 20px 22px; border: 1px solid #d5b9bd; border-radius: 11px; background: #f8e9eb; }
+.boundary > span { padding: 5px 7px; border-radius: 4px; background: var(--red); color: #fff; font: 9px monospace; font-weight: 800; }
+.boundary p { margin: 0; color: #765f63; font-size: 12px; line-height: 1.75; }
+.boundary b { color: #3d252a; }
+
+.guidePromo { background: #df334e; color: #fff; }
+.guidePromoGrid { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(60px, 9vw, 130px); align-items: center; }
+.guidePromo .kicker { color: #ffd3da; }
+.guidePromo .sectionHead.inverse > p:last-of-type { color: #f7c3cb; }
+.guideButton { display: inline-flex; align-items: center; justify-content: space-between; gap: 50px; min-width: 250px; margin-top: 34px; padding: 16px 18px; border-radius: 8px; background: #10141a; color: #fff; font-size: 13px; font-weight: 760; }
+.channelStack { display: grid; gap: 10px; }
+.channelStack article { display: grid; grid-template-columns: 38px 1fr auto; gap: 16px; align-items: center; min-height: 92px; padding: 18px; border: 1px solid rgb(255 255 255 / 22%); border-radius: 12px; background: rgb(116 14 32 / 20%); }
+.channelStack article > span { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: #fff; color: var(--red); font: 10px monospace; font-weight: 800; }
+.channelStack b, .channelStack small { display: block; }
+.channelStack b { font-size: 15px; }
+.channelStack small { margin-top: 6px; color: #ffd2d9; font-size: 10px; }
+.channelStack em { color: #ffb4c0; font: 9px monospace; font-style: normal; letter-spacing: .1em; }
+.guideSequence { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 18px 6px 0; color: #ffd3da; font-size: 10px; }
+.guideSequence b { font-size: 10px; }
+.guideSequence i { opacity: .55; font-style: normal; }
+
 .ecosystem { background: #10141a; color: #f5f6f8; }
 .ecosystemIntro { display: grid; grid-template-columns: 1fr .72fr; gap: clamp(50px, 9vw, 130px); align-items: end; }
 .ecosystemIntro > p { margin: 0 0 5px; color: #9299a3; font-size: 15px; line-height: 1.8; }
@@ -139,6 +170,15 @@ h1 em { color: var(--red); font-style: normal; }
 .steps span { color: var(--red); font: 10px monospace; }
 .steps h3 { margin: 62px 0 15px; font-size: 19px; }
 .steps p { color: #9299a3; font-size: 12px; line-height: 1.75; }
+.defaultAccess { display: grid; grid-template-columns: 1.2fr 1fr auto; gap: 32px; align-items: center; margin-top: 32px; padding: 26px; border: 1px solid #34483f; border-radius: 13px; background: #15211d; }
+.defaultAccess > div > span { color: var(--mint); font: 9px monospace; letter-spacing: .12em; }
+.defaultAccess h3 { margin: 10px 0 8px; font-size: 18px; }
+.defaultAccess p { max-width: 450px; margin: 0; color: #91a19a; font-size: 11px; line-height: 1.65; }
+.defaultAccess dl { display: grid; gap: 8px; margin: 0; }
+.defaultAccess dl div { display: grid; grid-template-columns: 78px 1fr; gap: 12px; }
+.defaultAccess dt { color: #718078; font-size: 10px; }
+.defaultAccess dd { margin: 0; color: #e5f4ed; font: 11px monospace; }
+.defaultAccess > a { padding: 12px 14px; border-radius: 7px; background: var(--mint); color: #10201a; font-size: 11px; font-weight: 800; white-space: nowrap; }
 .warning { display: flex; align-items: center; gap: 16px; margin-top: 32px; padding: 18px 22px; border: 1px solid #514136; border-radius: 10px; background: #251f1c; color: #c7b6aa; font-size: 12px; }
 .warning > span { display: grid; place-items: center; flex: 0 0 26px; height: 26px; border-radius: 50%; background: #e69d52; color: #21170f; font-weight: 900; }
 .warning p { margin: 0; }
@@ -151,15 +191,98 @@ h1 em { color: var(--red); font-style: normal; }
 .footerGrid > div > p { color: #a3a9b0; font-size: 12px; line-height: 1.8; }
 .legal { display: flex; justify-content: space-between; padding-top: 22px; border-top: 1px solid #252a31; color: #555c65; font-size: 10px; }
 
+/* Notification guide */
+.guidePage { background: #f4f1eb; }
+.guideNavLinks { display: flex; gap: 28px; color: #5f6268; font-size: 13px; }
+.guideHero { display: grid; grid-template-columns: 1.25fr .75fr; gap: clamp(60px, 10vw, 150px); align-items: end; min-height: 590px; padding-block: 90px 100px; }
+.guideHero h1 { font-size: clamp(58px, 7vw, 96px); }
+.guideHeroSide { padding-bottom: 8px; }
+.guideHeroSide > p { margin: 0; color: #686b70; font-size: 16px; line-height: 1.85; }
+.guideHeroSide > div { display: flex; align-items: end; justify-content: space-between; margin-top: 46px; padding-top: 20px; border-top: 1px solid var(--line); }
+.guideHeroSide span { color: #8a8c90; font: 10px monospace; }
+.guideHeroSide b { font-size: 24px; letter-spacing: -.04em; }
+.guideSection { padding-block: 110px; }
+.guideTwoCol { display: grid; grid-template-columns: .65fr 1.35fr; gap: clamp(60px, 10vw, 150px); }
+.guideAside > span { color: var(--red); font: 10px monospace; letter-spacing: .12em; }
+.guideAside h2 { margin: 18px 0 0; font-size: 45px; letter-spacing: -.05em; }
+.guideAside p { margin: 20px 0 0; color: #9199a3; font-size: 13px; line-height: 1.8; }
+.guideAside.inverse h2 { color: #fff; }
+.checkGrid { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid #c7c1b7; border-left: 1px solid #c7c1b7; }
+.checkGrid article { min-height: 210px; padding: 25px; border-right: 1px solid #c7c1b7; border-bottom: 1px solid #c7c1b7; }
+.checkGrid span { color: var(--red); font: 9px monospace; }
+.checkGrid h3 { margin: 48px 0 12px; font-size: 18px; }
+.checkGrid p { margin: 0; color: #71747a; font-size: 12px; line-height: 1.75; }
+.checkGrid code, .troubleGrid code { color: #b8233c; font-family: monospace; }
+.guideChannels { background: #10141a; color: #f5f6f8; }
+.guideSectionHead { max-width: 760px; }
+.guideSectionHead h2 { margin: 0; font-size: clamp(42px, 5vw, 68px); letter-spacing: -.055em; }
+.guideSectionHead > p:last-child { color: #8f97a1; font-size: 15px; line-height: 1.75; }
+.providerList { margin-top: 60px; border-top: 1px solid #303640; }
+.provider { border-bottom: 1px solid #303640; }
+.provider summary { display: grid; grid-template-columns: 44px 1fr auto 24px; gap: 20px; align-items: center; min-height: 118px; padding: 18px 8px; cursor: pointer; list-style: none; }
+.provider summary::-webkit-details-marker { display: none; }
+.provider summary > span { display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid #404853; border-radius: 50%; color: var(--mint); font: 9px monospace; }
+.provider summary b, .provider summary small { display: block; }
+.provider summary b { font-size: 21px; }
+.provider summary small { margin-top: 7px; color: #77808b; font-size: 11px; }
+.provider summary em { color: #5f6873; font: 9px monospace; font-style: normal; letter-spacing: .12em; }
+.provider summary i { color: #69727d; font-size: 22px; font-style: normal; transition: transform .2s ease; }
+.provider[open] summary i { transform: rotate(45deg); }
+.providerBody { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(40px, 7vw, 90px); padding: 8px 8px 50px 72px; }
+.providerBody ol { margin: 0; padding-left: 20px; color: #b4bac1; font-size: 13px; line-height: 1.85; }
+.providerBody li { padding-left: 7px; margin-bottom: 12px; }
+.providerBody pre, .terminalBlock pre, .verifySteps pre { overflow-x: auto; margin: 0; white-space: pre; }
+.providerBody pre { padding: 20px; border: 1px solid #2e3540; border-radius: 0 0 9px 9px; background: #0b0e12; color: #ccecdf; font: 11px/1.8 monospace; }
+.providerBody a { display: inline-block; margin-top: 14px; color: var(--mint); font-size: 10px; }
+.codeHead { display: flex; justify-content: space-between; padding: 11px 14px; border-radius: 9px 9px 0 0; background: #272d35; color: #8e96a1; font: 9px monospace; }
+.codeHead b { color: #d89ba5; font-weight: 500; }
+.guideDevice { background: #df334e; }
+.guideDevice .guideAside > span { color: #ffd4db; }
+.terminalBlock { overflow: hidden; border-radius: 13px; background: #0d1117; box-shadow: 0 30px 70px rgb(69 7 18 / 25%); }
+.terminalTitle { display: flex; align-items: center; gap: 6px; height: 43px; padding: 0 15px; border-bottom: 1px solid #272d35; background: #161b22; }
+.terminalTitle i { width: 8px; height: 8px; border-radius: 50%; background: #4a515b; }
+.terminalTitle i:first-child { background: #dc5369; }
+.terminalTitle span { margin-left: auto; color: #69727d; font: 9px monospace; }
+.terminalBlock > pre { padding: 28px; color: #ccecdf; font: 12px/1.95 monospace; }
+.terminalBlock > p { margin: 0; padding: 18px 26px; border-top: 1px solid #272d35; color: #8b939e; font-size: 11px; line-height: 1.7; }
+kbd { padding: 2px 5px; border: 1px solid #414955; border-radius: 4px; background: #252b33; color: #d1d6dc; font: 10px monospace; }
+.guideVerify { background: #e9e5de; }
+.verifyGrid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 26px; margin-top: 58px; }
+.terminalBlock.light { box-shadow: 0 24px 55px rgb(21 25 31 / 15%); }
+.verifySteps { display: grid; border: 1px solid #cac5bc; border-radius: 13px; background: #f7f4ee; }
+.verifySteps article { display: grid; grid-template-columns: 34px 1fr; gap: 16px; padding: 22px; border-bottom: 1px solid #d7d2ca; }
+.verifySteps article:last-child { border-bottom: 0; }
+.verifySteps article > span { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: #161b22; color: #fff; font: 9px monospace; }
+.verifySteps b { font-size: 13px; }
+.verifySteps p { margin: 8px 0 0; color: #797c81; font-size: 11px; }
+.verifySteps pre { margin-top: 10px; padding: 10px; border-radius: 5px; background: #e9e5de; color: #31363d; font: 9px/1.6 monospace; }
+.troubleshooting { background: #10141a; color: #f5f6f8; }
+.troubleGrid { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 55px; border-top: 1px solid #303640; border-left: 1px solid #303640; }
+.troubleGrid article { min-height: 235px; padding: 24px; border-right: 1px solid #303640; border-bottom: 1px solid #303640; }
+.troubleGrid span { color: var(--mint); font: 9px monospace; }
+.troubleGrid h3 { margin: 48px 0 12px; font-size: 17px; }
+.troubleGrid p { margin: 0; color: #8d95a0; font-size: 11px; line-height: 1.75; }
+.troubleGrid code { color: var(--mint); }
+.secretWarning { display: flex; align-items: center; gap: 16px; margin-top: 28px; padding: 18px 20px; border: 1px solid #4f393d; border-radius: 9px; background: #21181b; color: #bda6ab; font-size: 11px; }
+.secretWarning > span { display: grid; place-items: center; flex: 0 0 26px; height: 26px; border-radius: 50%; background: var(--red); color: #fff; font-weight: 900; }
+.secretWarning p { margin: 0; }
+.secretWarning b { color: #eadce0; }
+
 @media (max-width: 860px) {
   .navLinks { display: none; }
   .hero { grid-template-columns: 1fr; padding-top: 46px; }
   .heroCopy { max-width: 680px; }
   .console { min-height: 540px; }
   .capGrid { grid-template-columns: repeat(2, 1fr); }
-  .archGrid, .localeGrid, .ecosystemIntro { grid-template-columns: 1fr; }
-  .projectGrid { grid-template-columns: repeat(2, 1fr); }
+  .archGrid, .localeGrid, .ecosystemIntro, .roadmapIntro, .guidePromoGrid { grid-template-columns: 1fr; }
+  .projectGrid, .roadmapGrid { grid-template-columns: repeat(2, 1fr); }
   .steps { grid-template-columns: repeat(2, 1fr); }
+  .defaultAccess { grid-template-columns: 1fr 1fr; }
+  .defaultAccess > a { grid-column: 1 / -1; text-align: center; }
+  .guideNavLinks { display: none; }
+  .guideHero, .guideTwoCol, .verifyGrid { grid-template-columns: 1fr; }
+  .providerBody { grid-template-columns: 1fr; padding-left: 8px; }
+  .troubleGrid { grid-template-columns: repeat(2, 1fr); }
   .steps article:nth-child(2) { border-right: 0; }
   .steps article:nth-child(-n+2) { border-bottom: 1px solid #343a43; }
 }
@@ -176,7 +299,7 @@ h1 em { color: var(--red); font-style: normal; }
   .console { padding: 16px; border-radius: 16px; }
   .section { padding-block: 80px; }
   .sectionHead h2 { font-size: 40px; }
-  .capGrid, .projectGrid, .steps { grid-template-columns: 1fr; }
+  .capGrid, .projectGrid, .roadmapGrid, .steps { grid-template-columns: 1fr; }
   .capCard { min-height: 230px; }
   .steps article { min-height: 210px; border-right: 0; border-bottom: 1px solid #343a43; }
   .steps article:last-child { border-bottom: 0; }
@@ -188,4 +311,14 @@ h1 em { color: var(--red); font-style: normal; }
   .footerGrid { grid-template-columns: 1fr 1fr; }
   .footerGrid > div:first-child { grid-column: 1 / -1; }
   .legal { gap: 10px; flex-direction: column; }
+  .guideSequence { display: grid; grid-template-columns: 1fr auto 1fr; }
+  .guideSequence i:nth-of-type(2), .guideSequence b:last-child { display: none; }
+  .guideHero { min-height: auto; padding-block: 60px 70px; }
+  .guideHero h1 { font-size: 50px; }
+  .checkGrid, .troubleGrid { grid-template-columns: 1fr; }
+  .provider summary { grid-template-columns: 38px 1fr 22px; gap: 12px; }
+  .provider summary em { display: none; }
+  .providerBody { padding: 5px 0 35px; }
+  .defaultAccess { grid-template-columns: 1fr; }
+  .defaultAccess > a { grid-column: auto; }
 }
