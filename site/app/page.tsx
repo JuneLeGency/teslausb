@@ -27,7 +27,7 @@ const localization = [
 
 const assetStats = [
   ['44', '锁车音', '全部通过 WAV 格式、采样率与 1 MiB 上限检查'],
-  ['20', '完整灯光秀', '音频与 FSEQ 成对，序列通过 Tesla 官方校验器'],
+  ['20', '完整灯光秀', '音频与 FSEQ 成对并通过官方校验；另有 6 个缺配乐序列已隔离'],
   ['826', '车型皮肤', '完整翻页抓取，按 6 种精确车型模板归档'],
 ];
 
@@ -164,7 +164,7 @@ export default function Home() {
       <section className="section assets" id="assets">
         <div className="shell">
           <div className="assetIntro">
-            <div className="sectionHead"><p className="kicker">02 / CURATED CAR ASSETS</p><h2>916 份资源已入库，<br />只把合适的留在车上。</h2></div>
+            <div className="sectionHead"><p className="kicker">02 / CURATED CAR ASSETS</p><h2>916 个文件已索引，<br />只把合适的留在车上。</h2></div>
             <div className="assetIntroCopy">
               <p>完整库用于检索和车型适配；你的 Zero 只暂存一份 12 MB 个人精选包，降低空间占用，也避免不兼容文件干扰车机识别。</p>
               <a href="https://www.xiaote.com/tools/resources" target="_blank" rel="noreferrer">查看素材来源 ↗</a>
