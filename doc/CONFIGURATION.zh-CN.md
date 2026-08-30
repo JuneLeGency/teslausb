@@ -63,6 +63,8 @@ export ASSET_LIBRARY_PASSWORD='3.1415926'
 
 上传文件只进入 `/mutable/assets/inbox`，不会直接写 LightShow、Boombox、Custom 或 TeslaCam 盘。这样即使车辆仍连接 USB，也不会产生双端同时写盘。
 
+个人精选素材包同样应先放入 `/mutable/assets/inbox/featured`。它与车辆看到的 USB LUN 完全隔离，可以在车辆连接时安全暂存；真正安装到对应盘之前，仍需执行 USB 断开、挂载、复制、卸载、恢复的互斥流程。
+
 ### 停车工具箱
 
 连接维护热点后打开 `http://192.168.66.1/parking/`，可使用停车计时、充电时间/费用估算、胎压换算和全屏氛围灯。页面全部本地运行，仅供安全停车后使用。

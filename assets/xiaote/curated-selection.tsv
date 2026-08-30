@@ -1,0 +1,28 @@
+category	model	title	source_path	target_path	validation
+lock-sound	all	欢快结束	assets/xiaote/raw/lock-sounds/欢快结束.WAV	Boombox/01-cheerful.wav	PCM 16-bit stereo 44.1kHz; <1MiB
+lock-sound	all	欢快结束 2	assets/xiaote/raw/lock-sounds/欢快结束1.WAV	Boombox/02-cheerful-alt.wav	PCM 16-bit stereo 44.1kHz; <1MiB
+lock-sound	all	大气结尾	assets/xiaote/raw/lock-sounds/大气结尾.WAV	Boombox/03-cinematic.wav	PCM 16-bit stereo 44.1kHz; <1MiB; default LockChime.wav
+lock-sound	all	常用片尾	assets/xiaote/raw/lock-sounds/常用片尾.WAV	Boombox/04-ending.wav	PCM 16-bit stereo 44.1kHz; <1MiB
+lock-sound	all	机器人	assets/xiaote/raw/lock-sounds/机器人.WAV	Boombox/05-robot.wav	PCM 16-bit stereo 44.1kHz; <1MiB
+lightshow	all	2001 太空漫游（配乐）	assets/xiaote/raw/lightshows/2001太空漫游/LightShow/lightshow.mp3	LightShow/2001-space-odyssey.mp3	44.1kHz; duration matched; Tesla validator passed
+lightshow	all	2001 太空漫游（序列）	assets/xiaote/raw/lightshows/2001太空漫游/LightShow/lightshow.fseq	LightShow/2001-space-odyssey.fseq	Tesla validator passed
+lightshow	all	星球大战（配乐）	assets/xiaote/raw/lightshows/星球大战/LightShow/lightshow.mp3	LightShow/star-wars.mp3	44.1kHz; duration matched; Tesla validator passed
+lightshow	all	星球大战（序列）	assets/xiaote/raw/lightshows/星球大战/LightShow/lightshow.fseq	LightShow/star-wars.fseq	Tesla validator passed
+lightshow	all	加勒比海盗（配乐）	assets/xiaote/raw/lightshows/加勒比海盗/LightShow/lightshow.mp3	LightShow/pirates.mp3	44.1kHz; duration matched; Tesla validator passed
+lightshow	all	加勒比海盗（序列）	assets/xiaote/raw/lightshows/加勒比海盗/LightShow/lightshow.fseq	LightShow/pirates.fseq	Tesla validator passed
+lightshow	all	超级马里奥（配乐）	assets/xiaote/raw/lightshows/超级马里奥/LightShow/lightshow.mp3	LightShow/super-mario.mp3	44.1kHz; duration matched; Tesla validator passed
+lightshow	all	超级马里奥（序列）	assets/xiaote/raw/lightshows/超级马里奥/LightShow/lightshow.fseq	LightShow/super-mario.fseq	Tesla validator passed
+lightshow	all	生日快乐（配乐）	assets/xiaote/raw/lightshows/祝你生日快乐/LightShow/lightshow.mp3	LightShow/happy-birthday.mp3	44.1kHz; duration matched; Tesla validator passed
+lightshow	all	生日快乐（序列）	assets/xiaote/raw/lightshows/祝你生日快乐/LightShow/lightshow.fseq	LightShow/happy-birthday.fseq	Tesla validator passed
+skin	model3	赛博玫瑰	assets/xiaote/raw/skins/model3/de9b2c2f.jpg	Wraps/model3/cyber-rose.jpg	1024x1024; exact model template
+skin	model3	雷霆战甲	assets/xiaote/raw/skins/model3/885d20b6.jpg	Wraps/model3/thunder-armor.jpg	1024x1024; exact model template
+skin	model3-2024-base	暗夜迷彩	assets/xiaote/raw/skins/model3-2024-base/f0a26ca9.jpg	Wraps/model3-2024-base/night-camo.jpg	1024x1024; exact model template
+skin	model3-2024-base	赛博朋克红	assets/xiaote/raw/skins/model3-2024-base/21e5907e.jpg	Wraps/model3-2024-base/cyber-red.jpg	1024x1024; exact model template
+skin	model3-2024-performance	Camo	assets/xiaote/raw/skins/model3-2024-performance/b8b44759.png	Wraps/model3-2024-performance/camo.png	1024x1024 RGBA; exact model template
+skin	model3-2024-performance	Cosmic Burst	assets/xiaote/raw/skins/model3-2024-performance/37b69cc7.png	Wraps/model3-2024-performance/cosmic-burst.png	1024x1024 RGBA; exact model template
+skin	modely	猫之幻境	assets/xiaote/raw/skins/modely/b1cd191e.jpg	Wraps/modely/cat-dream.jpg	1024x1024; exact model template
+skin	modely	机甲狂飙	assets/xiaote/raw/skins/modely/30d4ae9f.jpg	Wraps/modely/mecha-orange.jpg	1024x1024; exact model template
+skin	modely-2025-base	银色战甲	assets/xiaote/raw/skins/modely-2025-base/e233297d.jpg	Wraps/modely-2025-base/silver-armor.jpg	1024x1024; exact model template
+skin	modely-2025-base	数码迷彩	assets/xiaote/raw/skins/modely-2025-base/6ad6d9fb.jpg	Wraps/modely-2025-base/digital-camo.jpg	1024x1024; exact model template
+skin	modely-2025-performance	Camo	assets/xiaote/raw/skins/modely-2025-performance/e46e96f6.png	Wraps/modely-2025-performance/camo.png	1024x1024 RGBA; exact model template
+skin	modely-2025-performance	Cosmic Burst	assets/xiaote/raw/skins/modely-2025-performance/5fcd2c81.png	Wraps/modely-2025-performance/cosmic-burst.png	1024x1024 RGBA; exact model template

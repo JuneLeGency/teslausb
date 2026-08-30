@@ -25,6 +25,18 @@ const localization = [
   ['底层技术日志', '部分保留上游英文', 'pending'],
 ];
 
+const assetStats = [
+  ['44', '锁车音', '全部通过 WAV 格式、采样率与 1 MiB 上限检查'],
+  ['20', '完整灯光秀', '音频与 FSEQ 成对，序列通过 Tesla 官方校验器'],
+  ['826', '车型皮肤', '完整翻页抓取，按 6 种精确车型模板归档'],
+];
+
+const featuredAssets = [
+  ['SOUND / 05', '五种短促锁车音', '默认“大气结尾”，另含欢快、机器人等候选；统一 44.1 kHz PCM。'],
+  ['LIGHT / 05', '五套完整灯光秀', '太空漫游、星球大战、加勒比海盗、超级马里奥与生日快乐。'],
+  ['WRAPS / 12', '六车型模板皮肤', '每种模板精选两张，包含赛博玫瑰、星空、金属、迷彩与猫咪主题。'],
+];
+
 const ecosystem = [
   {
     status: '已接入',
@@ -89,6 +101,7 @@ export default function Home() {
         </a>
         <div className="navLinks">
           <a href="#capabilities">能力</a>
+          <a href="#assets">素材</a>
           <a href="#architecture">架构</a>
           <a href="#roadmap">路线图</a>
           <a href="/guides/notifications">教程</a>
@@ -148,9 +161,35 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="section assets" id="assets">
+        <div className="shell">
+          <div className="assetIntro">
+            <div className="sectionHead"><p className="kicker">02 / CURATED CAR ASSETS</p><h2>916 份资源已入库，<br />只把合适的留在车上。</h2></div>
+            <div className="assetIntroCopy">
+              <p>完整库用于检索和车型适配；你的 Zero 只暂存一份 12 MB 个人精选包，降低空间占用，也避免不兼容文件干扰车机识别。</p>
+              <a href="https://www.xiaote.com/tools/resources" target="_blank" rel="noreferrer">查看素材来源 ↗</a>
+            </div>
+          </div>
+          <div className="assetStats">
+            {assetStats.map(([number, label, copy]) => (
+              <article key={label}><b>{number}</b><span>{label}</span><p>{copy}</p></article>
+            ))}
+          </div>
+          <div className="featuredGrid">
+            {featuredAssets.map(([code, title, copy]) => (
+              <article key={code}><span>{code}</span><h3>{title}</h3><p>{copy}</p><i>已精选</i></article>
+            ))}
+          </div>
+          <div className="assetSafety">
+            <span>LOCAL ONLY</span>
+            <p><b>写卡策略：</b>精选包先进入 <code>/mutable/assets/inbox/featured</code>，与车辆正在访问的 USB 盘隔离。公开镜像只包含清单和校验工具，不分发授权状态不明的素材原文件；真正安装到 LightShow、Boombox 或 Wraps 前仍需释放对应 LUN。</p>
+          </div>
+        </div>
+      </section>
+
       <section className="section architecture" id="architecture">
         <div className="shell archGrid">
-          <div className="sectionHead"><p className="kicker">02 / ARCHITECTURE</p><h2>车和归档端之间，<br />有一道严格的安全边界。</h2><p>TeslaUSB 不让车辆和 Linux 同时写同一块盘。每次归档都遵循断开、检查、复制、确认、恢复的顺序。</p><a className="textLink" href="https://github.com/marcone/teslausb" target="_blank" rel="noreferrer">查看上游项目 ↗</a></div>
+          <div className="sectionHead"><p className="kicker">03 / ARCHITECTURE</p><h2>车和归档端之间，<br />有一道严格的安全边界。</h2><p>TeslaUSB 不让车辆和 Linux 同时写同一块盘。每次归档都遵循断开、检查、复制、确认、恢复的顺序。</p><a className="textLink" href="https://github.com/marcone/teslausb" target="_blank" rel="noreferrer">查看上游项目 ↗</a></div>
           <div className="pipeline" aria-label="TeslaUSB 核心架构">
             <div className="pipeNode accent"><small>INPUT</small><b>TESLA</b><span>USB Mass Storage</span></div>
             <i>→</i>
@@ -165,7 +204,7 @@ export default function Home() {
       <section className="section roadmap" id="roadmap">
         <div className="shell">
           <div className="roadmapIntro">
-            <div className="sectionHead"><p className="kicker">03 / ZERO IMAGE ROADMAP</p><h2>下一批能力，<br />先守住 Zero 的边界。</h2></div>
+            <div className="sectionHead"><p className="kicker">04 / ZERO IMAGE ROADMAP</p><h2>下一批能力，<br />先守住 Zero 的边界。</h2></div>
             <p>优先选择低常驻内存、无数据库服务依赖、能在只读根文件系统上运行的功能。任何素材写入都必须服从 USB LUN 的互斥规则。</p>
           </div>
           <div className="roadmapGrid">
@@ -182,7 +221,7 @@ export default function Home() {
 
       <section className="section guidePromo" id="guides">
         <div className="shell guidePromoGrid">
-          <div className="sectionHead inverse"><p className="kicker">04 / STEP BY STEP</p><h2>归档结束，<br />让消息主动找你。</h2><p>钉钉、企业微信、飞书已经内置适配器。教程从创建群机器人开始，一直到设备端测试与故障排查。</p><a className="guideButton" href="/guides/notifications">打开完整通知教程 <span>→</span></a></div>
+          <div className="sectionHead inverse"><p className="kicker">05 / STEP BY STEP</p><h2>归档结束，<br />让消息主动找你。</h2><p>钉钉、企业微信、飞书已经内置适配器。教程从创建群机器人开始，一直到设备端测试与故障排查。</p><a className="guideButton" href="/guides/notifications">打开完整通知教程 <span>→</span></a></div>
           <div className="channelStack" aria-label="支持的国内通知渠道">
             <article><span>01</span><div><b>钉钉</b><small>自定义机器人 · 可选加签</small></div><em>DINGTALK</em></article>
             <article><span>02</span><div><b>企业微信</b><small>群机器人 · Webhook</small></div><em>WECOM</em></article>
@@ -195,7 +234,7 @@ export default function Home() {
       <section className="section ecosystem" id="ecosystem">
         <div className="shell">
           <div className="ecosystemIntro">
-            <div className="sectionHead inverse"><p className="kicker">05 / OPEN-SOURCE ECOSYSTEM</p><h2>能组合，不代表<br />都该塞进 Zero。</h2></div>
+            <div className="sectionHead inverse"><p className="kicker">06 / OPEN-SOURCE ECOSYSTEM</p><h2>能组合，不代表<br />都该塞进 Zero。</h2></div>
             <p>按运行位置和硬件能力拆分：轻量、安全边界清晰的能力进入镜像；视频计算、遥测数据库和车载副屏留在 NAS、服务器或独立树莓派。</p>
           </div>
           <div className="projectGrid">
@@ -215,7 +254,7 @@ export default function Home() {
 
       <section className="section localization" id="localization">
         <div className="shell localeGrid">
-          <div className="sectionHead"><p className="kicker">06 / LOCALIZATION</p><h2>本地化，做到哪一步了？</h2><p>基础系统、摄像头查看器、常用通知和使用入口已经面向中国大陆环境；底层日志保留少量上游英文，便于检索故障。</p></div>
+          <div className="sectionHead"><p className="kicker">07 / LOCALIZATION</p><h2>本地化，做到哪一步了？</h2><p>基础系统、摄像头查看器、常用通知和使用入口已经面向中国大陆环境；底层日志保留少量上游英文，便于检索故障。</p></div>
           <div className="audit">
             {localization.map(([name, value, status]) => (
               <div className="auditRow" key={name}><span className={`auditDot ${status}`} /><b>{name}</b><span>{value}</span><em>{status === 'done' ? '已完成' : '待推进'}</em></div>
@@ -226,7 +265,7 @@ export default function Home() {
 
       <section className="section flash" id="flash">
         <div className="shell">
-          <div className="sectionHead centered inverse"><p className="kicker">07 / FLASH & RUN</p><h2>从镜像到车内，四步完成。</h2><p>推荐 Pi Zero 2 W 与 128GB 高耐久卡。Zero W 也可使用本项目的 32 位 ARMHF 镜像。</p></div>
+          <div className="sectionHead centered inverse"><p className="kicker">08 / FLASH & RUN</p><h2>从镜像到车内，四步完成。</h2><p>推荐 Pi Zero 2 W 与 128GB 高耐久卡。Zero W 也可使用本项目的 32 位 ARMHF 镜像。</p></div>
           <div className="steps">
             <article><span>01</span><h3>校验镜像</h3><p>下载 `.img.zip`，核对随包提供的 SHA‑256。</p></article>
             <article><span>02</span><h3>写入 SD 卡</h3><p>使用 Raspberry Pi Imager，选择自定义镜像直接刷写。</p></article>

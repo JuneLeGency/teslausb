@@ -7,8 +7,11 @@
 - `raw/skins/<车型>/`：按车型分页下载的原始皮肤图片；
 - `catalog.tsv`：文件名、原始链接、大小、SHA-256 和同步日期。
 - `failures.tsv`：源站失效链接或本次同步失败项，后续重跑时会再次尝试。
+- `curated-selection.tsv`：个人精选包的选择、目标路径与兼容性验证记录；不包含二进制文件。
 
 运行 `tools/sync-xiaote-assets.sh` 可断点续传并重新生成清单。皮肤接口按每页 24 张持续请求，直到每个车型返回 `has_more=false`，并与车型列表中的数量核对。
+
+完整同步后运行 `tools/prepare-curated-assets.sh`，会先用 `catalog.tsv` 校验每个源文件的 SHA-256，再在被 Git 忽略的 `raw/curated/` 生成个人精选包。目前包含 5 个锁车音、5 套通过 Tesla 官方校验器的完整灯光秀，以及覆盖 6 种车型模板的 12 张皮肤。打包路径已经按 `Boombox/`、`LightShow/`、`Wraps/` 整理，可安全暂存到设备的 `/mutable/assets/inbox`。
 
 ## 授权边界
 

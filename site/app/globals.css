@@ -85,6 +85,28 @@ h1 em { color: var(--red); font-style: normal; }
 .capCard p { margin: 0; color: #8f97a1; font-size: 13px; line-height: 1.75; }
 .capCard i { position: absolute; right: 26px; top: 26px; color: #59616b; font-style: normal; }
 
+.assets { background: #df334e; color: #fff; }
+.assetIntro { display: grid; grid-template-columns: 1fr .72fr; gap: clamp(50px, 9vw, 130px); align-items: end; }
+.assets .kicker { color: #ffd3da; }
+.assetIntroCopy > p { margin: 0; color: #ffd3da; font-size: 15px; line-height: 1.8; }
+.assetIntroCopy > a { display: inline-block; margin-top: 20px; color: #fff; font-size: 11px; font-weight: 760; }
+.assetStats { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 62px; border-top: 1px solid rgb(255 255 255 / 32%); border-left: 1px solid rgb(255 255 255 / 32%); }
+.assetStats article { min-height: 235px; padding: 27px; border-right: 1px solid rgb(255 255 255 / 32%); border-bottom: 1px solid rgb(255 255 255 / 32%); }
+.assetStats b { display: block; font-size: clamp(58px, 7vw, 90px); line-height: 1; letter-spacing: -.07em; }
+.assetStats span { display: block; margin-top: 15px; font-size: 15px; font-weight: 780; }
+.assetStats p { max-width: 260px; margin: 32px 0 0; color: #ffc4ce; font-size: 11px; line-height: 1.7; }
+.featuredGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 28px; }
+.featuredGrid article { position: relative; min-height: 215px; padding: 25px; border-radius: 12px; background: #10141a; }
+.featuredGrid article > span { color: var(--mint); font: 9px monospace; letter-spacing: .11em; }
+.featuredGrid h3 { margin: 48px 0 12px; font-size: 19px; }
+.featuredGrid p { margin: 0; color: #9299a3; font-size: 11px; line-height: 1.75; }
+.featuredGrid i { position: absolute; top: 22px; right: 22px; padding: 5px 7px; border-radius: 4px; background: rgb(139 227 196 / 12%); color: var(--mint); font: 9px monospace; font-style: normal; }
+.assetSafety { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; margin-top: 18px; padding: 20px 22px; border: 1px solid rgb(255 255 255 / 25%); border-radius: 11px; background: rgb(112 9 27 / 24%); }
+.assetSafety > span { padding: 5px 7px; border-radius: 4px; background: #fff; color: var(--red); font: 9px monospace; font-weight: 800; }
+.assetSafety p { margin: 0; color: #ffd0d8; font-size: 12px; line-height: 1.75; }
+.assetSafety b { color: #fff; }
+.assetSafety code { color: #fff; font-family: monospace; }
+
 .architecture { background: #f4f1eb; }
 .archGrid { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(60px, 9vw, 130px); align-items: center; }
 .textLink { display: inline-block; margin-top: 36px; border-bottom: 1px solid var(--ink); padding-bottom: 5px; font-size: 13px; font-weight: 700; }
@@ -274,8 +296,8 @@ kbd { padding: 2px 5px; border: 1px solid #414955; border-radius: 4px; backgroun
   .heroCopy { max-width: 680px; }
   .console { min-height: 540px; }
   .capGrid { grid-template-columns: repeat(2, 1fr); }
-  .archGrid, .localeGrid, .ecosystemIntro, .roadmapIntro, .guidePromoGrid { grid-template-columns: 1fr; }
-  .projectGrid, .roadmapGrid { grid-template-columns: repeat(2, 1fr); }
+  .archGrid, .localeGrid, .ecosystemIntro, .roadmapIntro, .guidePromoGrid, .assetIntro { grid-template-columns: 1fr; }
+  .projectGrid, .roadmapGrid, .featuredGrid { grid-template-columns: repeat(2, 1fr); }
   .steps { grid-template-columns: repeat(2, 1fr); }
   .defaultAccess { grid-template-columns: 1fr 1fr; }
   .defaultAccess > a { grid-column: 1 / -1; text-align: center; }
@@ -299,7 +321,7 @@ kbd { padding: 2px 5px; border: 1px solid #414955; border-radius: 4px; backgroun
   .console { padding: 16px; border-radius: 16px; }
   .section { padding-block: 80px; }
   .sectionHead h2 { font-size: 40px; }
-  .capGrid, .projectGrid, .roadmapGrid, .steps { grid-template-columns: 1fr; }
+  .capGrid, .projectGrid, .roadmapGrid, .steps, .assetStats, .featuredGrid { grid-template-columns: 1fr; }
   .capCard { min-height: 230px; }
   .steps article { min-height: 210px; border-right: 0; border-bottom: 1px solid #343a43; }
   .steps article:last-child { border-bottom: 0; }
