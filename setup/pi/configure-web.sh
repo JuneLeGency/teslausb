@@ -24,6 +24,11 @@ umount /var/www/html/fs/LightShow &> /dev/null || true
 umount /var/www/html/fs/Boombox &> /dev/null || true
 umount /var/www/html/fs/Custom &> /dev/null || true
 find /var/www/html -mount \( -type f -o -type l \) -print0 | xargs -0 rm
+# Remove legacy 2048 files left behind by older localized builds. The generic
+# file cleanup above intentionally preserves directories and would otherwise
+# leave the old game tree and build-time cache on upgraded devices.
+rm -rf /var/www/html/parking/2048
+rm -f /usr/share/teslausb/2048-*.tar.gz /tmp/2048.tar.gz
 cp -r "$SOURCE_DIR/teslausb-www/html" /var/www/
 ln -sf /teslausb/teslausb-headless-setup.log /var/www/html/
 ln -sf /mutable/archiveloop.log /var/www/html/
